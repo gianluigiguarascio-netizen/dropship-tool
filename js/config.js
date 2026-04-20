@@ -44,7 +44,8 @@ const CONFIG = {
     // Telegram Bot
     telegram: {
         token: '8548180810:AAEs1LTBMOXXiibvgQXfhUZoqtf8rm9qKpg',
-        chatId: '787961523'
+        chatId: '787961523',
+        channelId: '@dropshopofferte'
     },
 
     // EmailJS

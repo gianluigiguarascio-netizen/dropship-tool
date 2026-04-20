@@ -20,6 +20,47 @@ const TelegramBot = {
         const settings = JSON.parse(localStorage.getItem('dropshop_deal_settings') || '{}');
         this.token = settings.telegramToken || (typeof CONFIG !== 'undefined' ? CONFIG.telegram.token : '');
         this.chatId = settings.telegramChatId || (typeof CONFIG !== 'undefined' ? CONFIG.telegram.chatId : '');
+        this.channelId = typeof CONFIG !== 'undefined' ? CONFIG.telegram.channelId : '';
+    },
+
+    // Pubblica offerta sul canale pubblico
+    async publishToChannel(deal) {
+        if (!this.token || !this.channelId) return false;
+
+        const text = `🔥 <b>OFFERTA DEL GIORNO!</b>
+
+<b>${deal.title}</b>
+
+💰 Solo <b>€ ${deal.currentPrice.toFixed(2)}</b>
+❌ <s>€ ${deal.originalPrice.toFixed(2)}</s>
+📉 Sconto: <b>-${deal.discount}%</b>
+⭐ ${deal.rating}/5
+
+🛒 <a href="https://dropshop-italia.netlify.app">Acquista su DropShop Italia →</a>
+
+📢 @dropshopofferte`;
+
+        try {
+            if (deal.image) {
+                const res = await fetch(`${this.baseUrl}${this.token}/sendPhoto`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ chat_id: this.channelId, photo: deal.image, caption: text, parse_mode: 'HTML' })
+                });
+                const data = await res.json();
+                if (data.ok) return true;
+            }
+            const res = await fetch(`${this.baseUrl}${this.token}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ chat_id: this.channelId, text, parse_mode: 'HTML', disable_web_page_preview: false })
+            });
+            const data = await res.json();
+            return data.ok;
+        } catch (err) {
+            console.error('[Telegram] Errore canale:', err);
+            return false;
+        }
     },
 
     isConfigured() {
@@ -306,13 +347,18 @@ const DealMonitor = {
         if (existing.length > 50) existing.pop();
         localStorage.setItem('dropshop_deals', JSON.stringify(existing));
 
-        // Invia alert Telegram
+        // Invia alert Telegram privato
         if (TelegramBot.isConfigured()) {
             if (isError) {
                 await TelegramBot.alertPriceError(newDeal);
             } else {
                 await TelegramBot.alertHotDeal(newDeal);
             }
+        }
+
+        // Pubblica sul canale pubblico se sconto >= 70%
+        if (newDeal.discount >= 70) {
+            await TelegramBot.publishToChannel(newDeal);
         }
 
         // Auto-import se configurato

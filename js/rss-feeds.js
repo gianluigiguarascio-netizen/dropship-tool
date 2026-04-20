@@ -136,13 +136,16 @@ const RSSFeedManager = {
             JSON.parse(localStorage.getItem('dropshop_deal_settings') || '{}').telegramToken;
         const chatId = (typeof CONFIG !== 'undefined' && CONFIG.telegram?.chatId) ||
             JSON.parse(localStorage.getItem('dropshop_deal_settings') || '{}').telegramChatId;
+        const channelId = typeof CONFIG !== 'undefined' ? CONFIG.telegram?.channelId : '';
 
-        if (!token || !chatId) return;
+        if (!token) return;
 
         const errori = newProducts.filter(p => p.isError);
         const hot = newProducts.filter(p => !p.isError && p.discount >= 70);
 
-        const text = `🔍 <b>NUOVE OFFERTE TROVATE!</b>
+        // Alert privato all'admin
+        if (chatId) {
+            const text = `🔍 <b>NUOVE OFFERTE TROVATE!</b>
 
 📦 Totale: <b>${newProducts.length} prodotti</b>
 🚨 Errori di prezzo: <b>${errori.length}</b>
@@ -156,14 +159,43 @@ ${newProducts.length > 3 ? `<i>...e altri ${newProducts.length - 3} prodotti</i>
 
 🔗 <a href="https://dropshop-italia.netlify.app/admin/deals.html">Vedi tutti nell'admin →</a>`;
 
-        try {
-            await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ chat_id: chatId, text, parse_mode: 'HTML', disable_web_page_preview: true })
-            });
-        } catch (e) {
-            console.warn('[RSS] Telegram notify error:', e.message);
+            try {
+                await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ chat_id: chatId, text, parse_mode: 'HTML', disable_web_page_preview: true })
+                });
+            } catch (e) { console.warn('[RSS] Telegram admin notify error:', e.message); }
+        }
+
+        // Pubblica le migliori offerte sul canale pubblico
+        if (channelId) {
+            const best = newProducts.filter(p => p.discount >= 70).slice(0, 3);
+            for (const deal of best) {
+                const text = `🔥 <b>OFFERTA DEL GIORNO!</b>
+
+<b>${deal.title}</b>
+
+💰 Solo <b>€ ${deal.currentPrice.toFixed(2)}</b>
+❌ <s>€ ${deal.originalPrice.toFixed(2)}</s>
+📉 Sconto: <b>-${deal.discount}%</b>
+
+🛒 <a href="https://dropshop-italia.netlify.app">Acquista su DropShop Italia →</a>
+
+📢 @dropshopofferte`;
+                try {
+                    const endpoint = deal.image ? 'sendPhoto' : 'sendMessage';
+                    const body = deal.image
+                        ? { chat_id: channelId, photo: deal.image, caption: text, parse_mode: 'HTML' }
+                        : { chat_id: channelId, text, parse_mode: 'HTML' };
+                    await fetch(`https://api.telegram.org/bot${token}/${endpoint}`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(body)
+                    });
+                    await new Promise(r => setTimeout(r, 1000));
+                } catch (e) { console.warn('[RSS] Telegram channel error:', e.message); }
+            }
         }
     }
 };
