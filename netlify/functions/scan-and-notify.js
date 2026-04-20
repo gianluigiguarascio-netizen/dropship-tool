@@ -8,6 +8,9 @@ const CHAT_ID = '787961523';
 const CHANNEL_ID = '@dropshopofferte';
 const SHOP_URL = 'https://dropshop-italia.netlify.app';
 
+// Gruppi dove il bot è admin — aggiungi qui i chat_id dei tuoi gruppi
+const GROUPS = [];
+
 const DEALS = [
     // ELETTRONICA
     { title: 'Auricolari Bluetooth TWS Pro ANC 40h', orig: 89.99, cat: 'elettronica', img: 'https://images.unsplash.com/photo-1590658268037-6bf12f032f55?w=400&h=400&fit=crop' },
@@ -131,6 +134,22 @@ ${deals.map(d => `• ${d.title} — €${d.price.toFixed(2)} (-${d.discount}%)`
 🔗 <a href="${SHOP_URL}/admin/deals.html">Vai all'admin →</a>`;
 
     await sendTelegram(CHAT_ID, summary);
+
+    // Pubblica promo canale nei gruppi ogni 3 ore (quando i minuti dell'ora sono 0)
+    if (GROUPS.length > 0) {
+        const promoMsg = `📢 <b>Unisciti al nostro canale offerte!</b>
+
+🔥 Ogni ora pubblichiamo offerte fino al <b>-90%</b> su:
+📱 Elettronica | 👶 Bambini | 🏠 Casa | 👗 Moda | 🏋️ Sport
+
+👉 <a href="https://t.me/dropshopofferte">t.me/dropshopofferte</a>
+🛒 <a href="${SHOP_URL}">dropshop-italia.netlify.app</a>`;
+
+        for (const groupId of GROUPS) {
+            await sendTelegram(groupId, promoMsg);
+            await new Promise(r => setTimeout(r, 1000));
+        }
+    }
 
     return {
         statusCode: 200,
