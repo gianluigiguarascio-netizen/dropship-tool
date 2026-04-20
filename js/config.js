@@ -19,10 +19,10 @@ const CONFIG = {
     shippingCost: 4.99,
     freeShippingThreshold: 49.99, // Spedizione gratuita sopra questa soglia
 
-    // Stripe (modalità test per ora)
+    // Stripe
     stripe: {
-        publishableKey: 'pk_test_XXXXXXXXXXXXXXXXXXXXXXXX', // Sostituisci con la tua chiave
-        mode: 'test' // 'test' o 'live'
+        publishableKey: 'pk_test_51TONQt7XUVJ6sgO3tzeXTmPUPUXsTBVWra553hlEiYQD9iQvXQ8SiTrKEEAUtOZizA8cJEp2qG8oDWZpNRbACgzf009raqmrHi',
+        mode: 'test'
     },
 
     // Firebase (sostituisci con le tue credenziali)

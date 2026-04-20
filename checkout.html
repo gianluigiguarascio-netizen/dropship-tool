@@ -6,6 +6,23 @@
     <title>Checkout — DropShop Italia</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://js.stripe.com/v3/"></script>
+    <style>
+        #card-element {
+            padding: 14px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            background: #fff;
+            transition: border-color 0.2s;
+        }
+        #card-element.StripeElement--focus { border-color: var(--primary, #6c5ce7); }
+        #card-element.StripeElement--invalid { border-color: #e74c3c; }
+        #card-errors { color: #e74c3c; font-size: 0.85rem; margin-top: 6px; min-height: 20px; }
+        .test-mode-banner {
+            background: #fff3cd; border: 1px solid #ffc107; border-radius: 8px;
+            padding: 10px 15px; font-size: 0.85rem; color: #856404; margin-bottom: 20px;
+        }
+    </style>
 </head>
 <body>
 
@@ -66,11 +83,22 @@
                         <label for="province">Provincia *</label>
                         <input type="text" id="province" maxlength="2" placeholder="Es: MI" required>
                     </div>
-                    <div class="form-group" style="margin-top:25px;">
+                    <div style="margin-top:25px;">
+                        <h3 style="margin-bottom:15px;">Pagamento</h3>
+                        <div class="test-mode-banner">
+                            <i class="fas fa-flask"></i> <b>Modalità Test</b> — Usa carta <code>4242 4242 4242 4242</code>, scadenza qualsiasi, CVC qualsiasi
+                        </div>
+                        <div class="form-group">
+                            <label>Carta di Credito / Debito *</label>
+                            <div id="card-element"></div>
+                            <div id="card-errors"></div>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top:20px;">
                         <label><input type="checkbox" id="termsCheck" required> Accetto i <a href="#" style="color:var(--primary);text-decoration:underline;">Termini e Condizioni</a></label>
                     </div>
                     <button type="submit" class="btn btn-primary btn-block btn-lg" id="payBtn" style="margin-top:15px;">
-                        <i class="fas fa-credit-card"></i> Paga Ora
+                        <i class="fas fa-lock"></i> Paga Ora
                     </button>
                     <p style="text-align:center;margin-top:12px;font-size:0.8rem;color:#636e72;">
                         <i class="fas fa-shield-halved"></i> Pagamento sicuro con Stripe
@@ -153,7 +181,26 @@
         }
     }
 
-    // Form submit
+    // Inizializza Stripe
+    const stripe = Stripe(CONFIG.stripe.publishableKey);
+    const elements = stripe.elements();
+    const cardElement = elements.create('card', {
+        style: {
+            base: {
+                fontSize: '16px',
+                color: '#2d3436',
+                fontFamily: '"Segoe UI", system-ui, sans-serif',
+                '::placeholder': { color: '#b2bec3' }
+            },
+            invalid: { color: '#e74c3c' }
+        }
+    });
+    cardElement.mount('#card-element');
+    cardElement.on('change', e => {
+        document.getElementById('card-errors').textContent = e.error ? e.error.message : '';
+    });
+
+    // Form submit con Stripe
     document.getElementById('checkoutForm').addEventListener('submit', async (e) => {
         e.preventDefault();
 
@@ -161,10 +208,29 @@
         btn.disabled = true;
         btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Elaborazione...';
 
-        // Raccogli dati ordine
+        // Crea token Stripe dalla carta
+        const { token, error } = await stripe.createToken(cardElement, {
+            name: `${document.getElementById('firstName').value} ${document.getElementById('lastName').value}`,
+            address_line1: document.getElementById('address').value,
+            address_city: document.getElementById('city').value,
+            address_zip: document.getElementById('cap').value,
+            address_country: 'IT'
+        });
+
+        if (error) {
+            document.getElementById('card-errors').textContent = error.message;
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-lock"></i> Paga Ora';
+            return;
+        }
+
+        // Costruisci ordine
         const order = {
             id: 'ORD-' + Date.now(),
             date: new Date().toISOString(),
+            stripeToken: token.id,
+            cardLast4: token.card.last4,
+            cardBrand: token.card.brand,
             customer: {
                 firstName: document.getElementById('firstName').value,
                 lastName: document.getElementById('lastName').value,
@@ -179,29 +245,38 @@
             subtotal: Cart.getTotal(),
             shipping: Cart.getShipping(),
             total: Cart.getGrandTotal(),
-            status: 'pending'
+            status: 'paid'
         };
 
-        // Salva ordine in localStorage (in produzione: Firebase)
+        // Salva ordine
         const orders = JSON.parse(localStorage.getItem('dropshop_orders') || '[]');
         orders.push(order);
         localStorage.setItem('dropshop_orders', JSON.stringify(orders));
 
-        // Simula pagamento (in produzione: Stripe Checkout redirect)
-        setTimeout(async () => {
-            order.status = 'paid';
-            localStorage.setItem('dropshop_orders', JSON.stringify(orders));
-
-            // AUTOMAZIONE: inoltra ordine al fornitore + email conferma
-            try {
-                await Automation.processNewOrder(order);
-            } catch (err) {
-                console.warn('[Checkout] Automazione fallita:', err);
+        // Notifica Telegram nuovo ordine
+        try {
+            const tSettings = JSON.parse(localStorage.getItem('dropshop_deal_settings') || '{}');
+            const tToken = tSettings.telegramToken || CONFIG.telegram.token;
+            const tChat = tSettings.telegramChatId || CONFIG.telegram.chatId;
+            if (tToken && tChat) {
+                const items = order.items.map(i => `  • ${i.name} x${i.qty}`).join('\n');
+                await fetch(`https://api.telegram.org/bot${tToken}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: tChat,
+                        parse_mode: 'HTML',
+                        text: `🛒 <b>NUOVO ORDINE!</b>\n\n📦 ID: <code>${order.id}</code>\n👤 ${order.customer.firstName} ${order.customer.lastName}\n📍 ${order.customer.city} (${order.customer.province})\n💳 ${order.cardBrand} •••• ${order.cardLast4}\n\nProdotti:\n${items}\n\n💰 Totale: <b>€ ${order.total.toFixed(2)}</b>`
+                    })
+                });
             }
+        } catch (err) { console.warn('[Checkout] Telegram:', err); }
 
-            Cart.clear();
-            window.location.href = `conferma.html?orderId=${order.id}`;
-        }, 2000);
+        // Automazione
+        try { await Automation.processNewOrder(order); } catch (err) {}
+
+        Cart.clear();
+        window.location.href = `conferma.html?orderId=${order.id}`;
     });
 
     function showToast(msg, type) {
