@@ -58,7 +58,7 @@
                     <img src="${p.image}" alt="${p.name}" loading="lazy">
                     ${p.badge ? `<span class="product-badge">${p.badge}</span>` : ''}
                     <div class="product-actions">
-                        <button onclick="window.location.href='product.html?id=${p.id}'" title="${lang === 'en' ? 'Open product' : 'Apri prodotto'}">
+                        <button onclick="openProductModal('${p.id}')" title="${lang === 'en' ? 'Open product' : 'Apri prodotto'}">
                             <i class="fas fa-eye"></i>
                         </button>
                     </div>
@@ -79,9 +79,9 @@
                         <button class="add-to-cart-btn" onclick="Cart.add('${p.id}')">
                             <i class="fas fa-cart-plus"></i> ${lang === 'en' ? 'Add to cart' : 'Aggiungi al Carrello'}
                         </button>
-                        <a href="product.html?id=${p.id}" class="btn btn-outline" style="padding:10px 12px;text-decoration:none;">
+                        <button class="btn btn-outline" onclick="openProductModal('${p.id}')" style="padding:10px 12px;">
                             ${lang === 'en' ? 'Details' : 'Dettagli'}
-                        </a>
+                        </button>
                     </div>
                 </div>
             </div>`;
@@ -234,9 +234,9 @@
                         <button class="btn btn-primary btn-block" onclick="Cart.add('${p.id}'); closeModal();">
                             <i class="fas fa-cart-plus"></i> ${lang === 'en' ? 'Add to cart' : 'Aggiungi al Carrello'}
                         </button>
-                        <a class="btn btn-outline" href="product.html?id=${p.id}" style="text-decoration:none;">
-                            ${lang === 'en' ? 'Open product page' : 'Apri scheda prodotto'}
-                        </a>
+                        <button class="btn btn-outline" onclick="closeModal()">
+                            ${lang === 'en' ? 'Close' : 'Chiudi'}
+                        </button>
                     </div>
                 </div>
             </div>`;
