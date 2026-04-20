@@ -228,18 +228,27 @@
                     <input type="number" id="setFreeShipping" value="49.99" step="0.01">
                 </div>
             </div>
-            <h3 style="margin:25px 0 15px;">Chiavi API</h3>
+            <h3 style="margin:25px 0 15px;"><i class="fas fa-box" style="color:#e67e22;"></i> CJDropshipping — Inoltro Ordini Automatico</h3>
+            <p style="color:var(--gray);font-size:0.85rem;margin-bottom:15px;">
+                Quando arriva un ordine, viene inoltrato automaticamente a CJDropshipping che spedisce direttamente al cliente.
+            </p>
             <div class="form-grid">
                 <div class="form-group">
-                    <label>Stripe Publishable Key</label>
-                    <input type="text" id="setStripeKey" placeholder="pk_test_...">
+                    <label>Email Account CJ</label>
+                    <input type="email" id="setCJEmail" placeholder="tua@email.com">
                 </div>
                 <div class="form-group">
-                    <label>CJDropshipping API Key</label>
-                    <input type="text" id="setCJKey" placeholder="La tua API key">
+                    <label>Password Account CJ</label>
+                    <input type="password" id="setCJPassword" placeholder="La tua password CJ">
                 </div>
             </div>
-            <button class="btn btn-primary" onclick="saveSettings()" style="margin-top:15px;">
+            <div style="margin-top:10px;display:flex;gap:10px;align-items:center;">
+                <button class="btn btn-outline btn-sm" onclick="testCJConnection()">
+                    <i class="fas fa-plug"></i> Testa Connessione CJ
+                </button>
+                <span id="cjStatus" style="font-size:0.85rem;color:var(--gray);"></span>
+            </div>
+            <button class="btn btn-primary" onclick="saveSettings()" style="margin-top:20px;">
                 <i class="fas fa-save"></i> Salva Impostazioni
             </button>
         </div>
@@ -551,13 +560,56 @@
             shopName: document.getElementById('setShopName').value,
             markup: document.getElementById('setMarkup').value,
             shipping: document.getElementById('setShipping').value,
-            freeShipping: document.getElementById('setFreeShipping').value,
-            stripeKey: document.getElementById('setStripeKey').value,
-            cjKey: document.getElementById('setCJKey').value
+            freeShipping: document.getElementById('setFreeShipping').value
         };
         localStorage.setItem('dropshop_settings', JSON.stringify(settings));
+
+        // Salva credenziali CJ separatamente
+        const cjEmail = document.getElementById('setCJEmail').value;
+        const cjPassword = document.getElementById('setCJPassword').value;
+        if (cjEmail && cjPassword) {
+            localStorage.setItem('dropshop_cj_credentials', JSON.stringify({ email: cjEmail, password: cjPassword }));
+        }
+
         alert('Impostazioni salvate!');
     }
+
+    async function testCJConnection() {
+        const email = document.getElementById('setCJEmail').value;
+        const password = document.getElementById('setCJPassword').value;
+        const status = document.getElementById('cjStatus');
+
+        if (!email || !password) {
+            status.innerHTML = '<span style="color:red;">⚠ Inserisci email e password</span>';
+            return;
+        }
+
+        status.innerHTML = '<span style="color:gray;">⏳ Connessione...</span>';
+        localStorage.setItem('dropshop_cj_credentials', JSON.stringify({ email, password }));
+
+        try {
+            const res = await fetch('https://developers.cjdropshipping.com/api2.0/v1/authentication/getAccessToken', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
+            });
+            const data = await res.json();
+            if (data.result && data.data?.accessToken) {
+                status.innerHTML = '<span style="color:green;">✅ Connesso a CJDropshipping!</span>';
+            } else {
+                status.innerHTML = `<span style="color:red;">❌ ${data.message || 'Credenziali errate'}</span>`;
+            }
+        } catch (err) {
+            status.innerHTML = '<span style="color:red;">❌ Errore di rete</span>';
+        }
+    }
+
+    // Carica credenziali CJ salvate
+    (function loadCJSettings() {
+        const creds = JSON.parse(localStorage.getItem('dropshop_cj_credentials') || '{}');
+        if (creds.email) document.getElementById('setCJEmail').value = creds.email;
+        if (creds.password) document.getElementById('setCJPassword').value = creds.password;
+    })();
 
     // Load settings
     const savedSettings = JSON.parse(localStorage.getItem('dropshop_settings') || 'null');

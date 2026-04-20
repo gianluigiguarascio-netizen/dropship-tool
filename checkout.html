@@ -143,6 +143,7 @@
 <script src="js/cart.js"></script>
 <script src="js/automation.js"></script>
 <script type="module" src="js/firebase-db.js"></script>
+<script src="js/cj-dropshipping.js"></script>
 <script>
     // Init
     document.addEventListener('DOMContentLoaded', () => {
@@ -291,6 +292,19 @@
                 to_email: order.customer.email
             });
         } catch (err) { console.warn('[EmailJS]', err); }
+
+        // Inoltra ordine a CJDropshipping
+        if (window.CJDropshipping && CJDropshipping.isConfigured()) {
+            try {
+                const cjResult = await CJDropshipping.createOrder(order);
+                if (cjResult.success) {
+                    order.cjOrderId = cjResult.cjOrderId;
+                    console.log('[CJ] Ordine inoltrato:', cjResult.cjOrderId);
+                } else {
+                    console.warn('[CJ] Inoltro fallito:', cjResult.error);
+                }
+            } catch (err) { console.warn('[CJ]', err); }
+        }
 
         // Automazione
         try { await Automation.processNewOrder(order); } catch (err) {}
