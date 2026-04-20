@@ -427,13 +427,20 @@
 <!-- Loading -->
 <div class="loading-overlay" id="loadingOverlay">
     <div class="spinner"></div>
-    <p style="margin-top:15px;color:var(--gray);">Scansione offerte in corso...</p>
+    <p style="margin-top:15px;color:var(--gray);" id="loadingText">Scansione offerte in corso...</p>
 </div>
 
 <!-- Toast -->
 <div class="toast" id="toast"></div>
 
+<script src="../js/config.js"></script>
+<script src="../js/rss-feeds.js"></script>
 <script>
+function updateLoadingText(msg) {
+    const el = document.getElementById('loadingText');
+    if (el) el.textContent = msg;
+}
+
 // ============================================
 // DEAL FINDER ENGINE
 // ============================================
@@ -593,42 +600,58 @@ const DealFinder = {
     },
 
     // ============================
-    // SCANSIONE (simula + struttura per API reale)
+    // SCANSIONE REALE da Feed RSS
     // ============================
     async scan() {
         showLoading(true);
+        updateLoadingText('Connessione ai feed...');
 
-        // In produzione qui chiami:
-        // 1. Amazon Product Advertising API (PA-API 5.0)
-        // 2. Keepa API per storico prezzi
-        // 3. Scraping feed Telegram via bot
-        // 4. RSS feed aggregatori offerte
+        try {
+            const newDeals = await RSSFeedManager.fetchAll((feedName, i, total) => {
+                updateLoadingText(`Feed ${i}/${total}: ${feedName}`);
+            });
 
-        // Simulazione: aggiunge nuove offerte random
-        await new Promise(r => setTimeout(r, 2500));
+            if (newDeals.length > 0) {
+                // Evita duplicati per URL
+                const existingUrls = new Set(this.deals.map(d => d.url));
+                const fresh = newDeals.filter(d => !existingUrls.has(d.url));
 
-        const newDeals = this.generateNewDeals(3);
-        this.deals = [...newDeals, ...this.deals].slice(0, 50); // Max 50 deal
-        localStorage.setItem('dropshop_deals', JSON.stringify(this.deals));
+                this.deals = [...fresh, ...this.deals].slice(0, 100);
+                localStorage.setItem('dropshop_deals', JSON.stringify(this.deals));
+
+                // Notifica Telegram
+                await RSSFeedManager.notifyTelegram(fresh);
+
+                showToast(`${fresh.length} nuove offerte trovate dai feed!`, 'success');
+
+                // Auto-import
+                const autoImport = this.settings.autoImport || 'off';
+                if (autoImport !== 'off') {
+                    const toImport = fresh.filter(d => {
+                        if (autoImport === 'errors') return d.isError;
+                        if (autoImport === 'hot') return d.discount >= 70;
+                        return true;
+                    });
+                    toImport.forEach(d => this.importDeal(d.id, true));
+                    if (toImport.length > 0) {
+                        showToast(`${toImport.length} offerte auto-importate nel negozio!`, 'success');
+                    }
+                }
+            } else {
+                // Fallback a demo se i feed non rispondono
+                const demoDeals = this.generateNewDeals(5);
+                this.deals = [...demoDeals, ...this.deals].slice(0, 100);
+                localStorage.setItem('dropshop_deals', JSON.stringify(this.deals));
+                showToast(`Feed offline — aggiunte ${demoDeals.length} offerte demo`, '');
+            }
+        } catch (err) {
+            console.error('[Scan]', err);
+            showToast('Errore durante la scansione', 'error');
+        }
 
         showLoading(false);
         this.renderDeals();
         this.updateStats();
-        showToast(`${newDeals.length} nuove offerte trovate!`, 'success');
-
-        // Auto-import se configurato
-        const autoImport = this.settings.autoImport || 'off';
-        if (autoImport !== 'off') {
-            const toImport = newDeals.filter(d => {
-                if (autoImport === 'errors') return d.isError;
-                if (autoImport === 'hot') return d.discount >= 70;
-                return true;
-            });
-            toImport.forEach(d => this.importDeal(d.id, true));
-            if (toImport.length > 0) {
-                showToast(`${toImport.length} offerte auto-importate nel negozio!`, 'success');
-            }
-        }
     },
 
     generateNewDeals(count) {
