@@ -351,13 +351,74 @@
                     <small style="color:var(--gray);">Importa automaticamente nel negozio</small>
                 </div>
             </div>
-            <div style="margin-top:20px;">
-                <label style="display:block;font-weight:600;font-size:0.9rem;margin-bottom:6px;">Amazon Associate Tag (opzionale)</label>
-                <input type="text" id="setAmazonTag" placeholder="tuotag-21" style="width:100%;max-width:400px;padding:10px;border:2px solid #e0e0e0;border-radius:8px;">
-                <small style="color:var(--gray);">Per link affiliato Amazon (guadagni anche dalle visite)</small>
+            <h3 style="margin:30px 0 15px;"><i class="fab fa-telegram" style="color:#0088cc;"></i> Bot Telegram (Notifiche Real-Time)</h3>
+            <p style="color:var(--gray);font-size:0.85rem;margin-bottom:15px;">
+                Ricevi alert istantanei quando troviamo errori di prezzo. <a href="#" onclick="showTelegramGuide()" style="color:var(--primary);text-decoration:underline;">Come configurare →</a>
+            </p>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+                <div>
+                    <label style="display:block;font-weight:600;font-size:0.9rem;margin-bottom:6px;">Bot Token</label>
+                    <input type="text" id="setTelegramToken" placeholder="123456789:ABCdefGHIjklMNOpqrSTUvwxYZ" style="width:100%;padding:10px;border:2px solid #e0e0e0;border-radius:8px;">
+                    <small style="color:var(--gray);">Ottienilo da @BotFather su Telegram</small>
+                </div>
+                <div>
+                    <label style="display:block;font-weight:600;font-size:0.9rem;margin-bottom:6px;">Chat ID</label>
+                    <input type="text" id="setTelegramChatId" placeholder="123456789" style="width:100%;padding:10px;border:2px solid #e0e0e0;border-radius:8px;">
+                    <small style="color:var(--gray);">Il tuo ID chat personale</small>
+                </div>
             </div>
-            <button class="btn btn-primary" onclick="saveDealSettings()" style="margin-top:20px;">
-                <i class="fas fa-save"></i> Salva Impostazioni
+            <div style="margin-top:10px;display:flex;gap:10px;">
+                <button class="btn btn-outline btn-sm" onclick="testTelegram()"><i class="fas fa-paper-plane"></i> Testa Connessione</button>
+                <span id="telegramStatus" style="font-size:0.85rem;color:var(--gray);line-height:32px;"></span>
+            </div>
+
+            <h3 style="margin:30px 0 15px;"><i class="fas fa-chart-line" style="color:#00b894;"></i> Keepa (Storico Prezzi Amazon)</h3>
+            <p style="color:var(--gray);font-size:0.85rem;margin-bottom:15px;">
+                Monitora lo storico prezzi per rilevare anomalie e veri errori. <a href="https://keepa.com/#!api" target="_blank" style="color:var(--primary);text-decoration:underline;">Ottieni API Key →</a>
+            </p>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+                <div>
+                    <label style="display:block;font-weight:600;font-size:0.9rem;margin-bottom:6px;">Keepa API Key</label>
+                    <input type="text" id="setKeepaKey" placeholder="La tua Keepa API key" style="width:100%;padding:10px;border:2px solid #e0e0e0;border-radius:8px;">
+                    <small style="color:var(--gray);">Gratis 1 token/min, Premium per scan automatico</small>
+                </div>
+                <div>
+                    <label style="display:block;font-weight:600;font-size:0.9rem;margin-bottom:6px;">Amazon Associate Tag</label>
+                    <input type="text" id="setAmazonTag" placeholder="tuotag-21" style="width:100%;padding:10px;border:2px solid #e0e0e0;border-radius:8px;">
+                    <small style="color:var(--gray);">Per link affiliato (guadagni anche dalle visite)</small>
+                </div>
+            </div>
+
+            <h3 style="margin:30px 0 15px;"><i class="fas fa-robot" style="color:var(--primary);"></i> Monitoraggio Automatico</h3>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+                <div>
+                    <label style="display:block;font-weight:600;font-size:0.9rem;margin-bottom:6px;">Frequenza Scansione</label>
+                    <select id="setScanInterval" style="width:100%;padding:10px;border:2px solid #e0e0e0;border-radius:8px;">
+                        <option value="15">Ogni 15 minuti</option>
+                        <option value="30" selected>Ogni 30 minuti</option>
+                        <option value="60">Ogni ora</option>
+                        <option value="360">Ogni 6 ore</option>
+                    </select>
+                </div>
+                <div>
+                    <label style="display:block;font-weight:600;font-size:0.9rem;margin-bottom:6px;">Notifiche Telegram</label>
+                    <select id="setTelegramAlerts" style="width:100%;padding:10px;border:2px solid #e0e0e0;border-radius:8px;">
+                        <option value="all">Tutti (errori + offerte + ordini)</option>
+                        <option value="errors">Solo errori di prezzo</option>
+                        <option value="orders">Solo nuovi ordini</option>
+                        <option value="off">Disattivate</option>
+                    </select>
+                </div>
+            </div>
+            <div style="margin-top:15px;display:flex;gap:10px;align-items:center;">
+                <button class="btn btn-success" onclick="startMonitor()"><i class="fas fa-play"></i> Avvia Monitor</button>
+                <button class="btn btn-danger btn-sm" onclick="stopMonitor()"><i class="fas fa-stop"></i> Ferma</button>
+                <span id="monitorStatus" style="font-size:0.85rem;color:var(--gray);">⏸ Non attivo</span>
+            </div>
+
+            <hr style="margin:30px 0;border:none;border-top:1px solid #eee;">
+            <button class="btn btn-primary" onclick="saveDealSettings()" style="margin-top:5px;">
+                <i class="fas fa-save"></i> Salva Tutte le Impostazioni
             </button>
         </div>
     </div>
@@ -894,6 +955,114 @@ document.getElementById('dealSearch').addEventListener('input', () => DealFinder
 document.getElementById('dealCategory').addEventListener('change', () => DealFinder.renderDeals());
 document.getElementById('dealFilter').addEventListener('change', () => DealFinder.renderDeals());
 document.getElementById('dealSource').addEventListener('change', () => DealFinder.renderDeals());
+
+// === TELEGRAM ===
+async function testTelegram() {
+    const token = document.getElementById('setTelegramToken').value.trim();
+    const chatId = document.getElementById('setTelegramChatId').value.trim();
+    const status = document.getElementById('telegramStatus');
+
+    if (!token || !chatId) {
+        status.innerHTML = '<span style="color:var(--danger);">⚠ Inserisci token e chat ID</span>';
+        return;
+    }
+
+    status.innerHTML = '<span style="color:var(--gray);">⏳ Test in corso...</span>';
+
+    try {
+        const text = `✅ <b>DropShop Bot Connesso!</b>\n\nRiceverai notifiche su:\n• 🚨 Errori di prezzo\n• 🔥 Offerte > 70%\n• 🛒 Nuovi ordini\n\nBuone vendite! 🚀`;
+        const response = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ chat_id: chatId, text: text, parse_mode: 'HTML' })
+        });
+        const data = await response.json();
+
+        if (data.ok) {
+            status.innerHTML = '<span style="color:var(--success);">✅ Connesso! Controlla Telegram</span>';
+        } else {
+            status.innerHTML = `<span style="color:var(--danger);">❌ Errore: ${data.description}</span>`;
+        }
+    } catch (err) {
+        status.innerHTML = `<span style="color:var(--danger);">❌ Errore di rete</span>`;
+    }
+}
+
+function showTelegramGuide() {
+    alert(
+        "COME CONFIGURARE IL BOT TELEGRAM:\n\n" +
+        "1️⃣ Apri Telegram e cerca @BotFather\n" +
+        "2️⃣ Invia /newbot\n" +
+        "3️⃣ Scegli un nome (es: DropShop Alert)\n" +
+        "4️⃣ Scegli un username (es: dropshop_alert_bot)\n" +
+        "5️⃣ Copia il TOKEN che ti dà BotFather\n\n" +
+        "PER IL CHAT ID:\n" +
+        "6️⃣ Avvia una chat con il tuo nuovo bot (premi Start)\n" +
+        "7️⃣ Invia un messaggio qualsiasi al bot\n" +
+        "8️⃣ Apri nel browser:\n" +
+        "   https://api.telegram.org/bot<TOKEN>/getUpdates\n" +
+        "9️⃣ Cerca 'chat':{'id': NUMERO} — quello è il tuo Chat ID\n\n" +
+        "Inserisci Token e Chat ID qui sopra e premi 'Testa Connessione'"
+    );
+}
+
+let monitorActive = false;
+let monitorInterval = null;
+
+function startMonitor() {
+    const interval = parseInt(document.getElementById('setScanInterval').value || 30);
+    monitorActive = true;
+    document.getElementById('monitorStatus').innerHTML = `<span style="color:var(--success);">🟢 Attivo — scan ogni ${interval} min</span>`;
+
+    // Esegui subito
+    DealFinder.scan();
+
+    // Ripeti
+    monitorInterval = setInterval(() => {
+        if (monitorActive) DealFinder.scan();
+    }, interval * 60 * 1000);
+
+    showToast(`Monitor avviato! Scansione ogni ${interval} minuti`, 'success');
+}
+
+function stopMonitor() {
+    monitorActive = false;
+    if (monitorInterval) { clearInterval(monitorInterval); monitorInterval = null; }
+    document.getElementById('monitorStatus').innerHTML = '<span style="color:var(--gray);">⏸ Non attivo</span>';
+    showToast('Monitor fermato', '');
+}
+
+// Override saveDealSettings per includere Telegram/Keepa
+function saveDealSettings() {
+    const settings = {
+        minDiscount: document.getElementById('setMinDiscount').value,
+        maxPrice: document.getElementById('setMaxPrice').value,
+        dealMarkup: document.getElementById('setDealMarkup').value,
+        minRating: document.getElementById('setMinRating').value,
+        errorThreshold: document.getElementById('setErrorThreshold').value,
+        autoImport: document.getElementById('setAutoImport').value,
+        amazonTag: document.getElementById('setAmazonTag').value,
+        telegramToken: document.getElementById('setTelegramToken').value,
+        telegramChatId: document.getElementById('setTelegramChatId').value,
+        keepaKey: document.getElementById('setKeepaKey')?.value || '',
+        scanInterval: document.getElementById('setScanInterval').value,
+        telegramAlerts: document.getElementById('setTelegramAlerts').value
+    };
+    localStorage.setItem('dropshop_deal_settings', JSON.stringify(settings));
+    DealFinder.settings = settings;
+    showToast('Tutte le impostazioni salvate!', 'success');
+}
+
+// Load saved settings for new fields
+(function loadExtraSettings() {
+    const s = JSON.parse(localStorage.getItem('dropshop_deal_settings') || '{}');
+    if (s.telegramToken) document.getElementById('setTelegramToken').value = s.telegramToken;
+    if (s.telegramChatId) document.getElementById('setTelegramChatId').value = s.telegramChatId;
+    if (s.keepaKey && document.getElementById('setKeepaKey')) document.getElementById('setKeepaKey').value = s.keepaKey;
+    if (s.amazonTag) document.getElementById('setAmazonTag').value = s.amazonTag;
+    if (s.scanInterval) document.getElementById('setScanInterval').value = s.scanInterval;
+    if (s.telegramAlerts) document.getElementById('setTelegramAlerts').value = s.telegramAlerts;
+})();
 
 // Init
 DealFinder.init();
