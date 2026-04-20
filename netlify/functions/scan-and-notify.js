@@ -94,8 +94,8 @@ async function sendTelegram(chatId, text, imageUrl = null) {
 }
 
 exports.handler = async () => {
-    // Scegli 3 offerte casuali
-    const shuffled = [...DEALS].sort(() => Math.random() - 0.5).slice(0, 3);
+    // Scegli 10 offerte casuali da categorie diverse
+    const shuffled = [...DEALS].sort(() => Math.random() - 0.5).slice(0, 10);
 
     const deals = shuffled.map(d => {
         const discount = Math.floor(70 + Math.random() * 25);
