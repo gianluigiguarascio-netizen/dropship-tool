@@ -47,12 +47,11 @@ const CONFIG = {
         chatId: '787961523'
     },
 
-    // Email notifiche (configurare con EmailJS o servizio simile)
+    // EmailJS
     email: {
-        serviceId: '',
-        templateOrderConfirm: '',
-        templateShipping: '',
-        publicKey: ''
+        serviceId: 'service_miya5tg',
+        templateOrderConfirm: 'template_10sitej',
+        publicKey: 'BNTKk2-EHRZA2oD8f9WwmsEMA6VrLpza5PCFa8MsP4ZKfJ1smzos_w-HwwbuTfIJC1Z5wi6iUOVDxiDfjYVjrQo'
     },
 
     // Categorie disponibili

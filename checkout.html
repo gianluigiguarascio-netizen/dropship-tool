@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <script src="https://js.stripe.com/v3/"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <style>
         #card-element {
             padding: 14px;
@@ -182,6 +183,9 @@
         }
     }
 
+    // Inizializza EmailJS
+    emailjs.init(CONFIG.email.publicKey);
+
     // Inizializza Stripe
     const stripe = Stripe(CONFIG.stripe.publishableKey);
     const elements = stripe.elements();
@@ -273,6 +277,23 @@
                 });
             }
         } catch (err) { console.warn('[Checkout] Telegram:', err); }
+
+        // Email conferma ordine
+        try {
+            const itemsList = order.items.map(i => `${i.name} x${i.qty} — €${(i.price * i.qty).toFixed(2)}`).join('\n');
+            await emailjs.send(CONFIG.email.serviceId, CONFIG.email.templateOrderConfirm, {
+                order_id: order.id,
+                customer_name: `${order.customer.firstName} ${order.customer.lastName}`,
+                customer_email: order.customer.email,
+                customer_address: `${order.customer.address}, ${order.customer.cap} ${order.customer.city} (${order.customer.province})`,
+                items_list: itemsList,
+                subtotal: `€ ${order.subtotal.toFixed(2)}`,
+                shipping: order.shipping === 0 ? 'Gratuita' : `€ ${order.shipping.toFixed(2)}`,
+                total: `€ ${order.total.toFixed(2)}`,
+                card_last4: order.cardLast4,
+                to_email: order.customer.email
+            });
+        } catch (err) { console.warn('[EmailJS]', err); }
 
         // Automazione
         try { await Automation.processNewOrder(order); } catch (err) {}
