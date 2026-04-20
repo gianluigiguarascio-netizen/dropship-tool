@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout — DropShop Italia</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+    <div class="container header-inner">
+        <a href="index.html" class="logo"><i class="fas fa-bolt"></i> DropShop</a>
+        <div class="header-actions" style="margin-left:auto;">
+            <a href="index.html" class="btn btn-secondary" style="font-size:0.85rem;">
+                <i class="fas fa-arrow-left"></i> Torna al negozio
+            </a>
+        </div>
+    </div>
+</header>
+
+<!-- Checkout -->
+<section class="checkout-page">
+    <div class="container">
+        <h2 class="section-title"><i class="fas fa-lock"></i> Checkout Sicuro</h2>
+        <div class="checkout-grid">
+            <!-- Form -->
+            <div class="checkout-form">
+                <h3 style="margin-bottom:20px;">Dati di Spedizione</h3>
+                <form id="checkoutForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">Nome *</label>
+                            <input type="text" id="firstName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Cognome *</label>
+                            <input type="text" id="lastName" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email *</label>
+                        <input type="email" id="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Telefono *</label>
+                        <input type="tel" id="phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Indirizzo *</label>
+                        <input type="text" id="address" placeholder="Via, Numero civico" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="city">Città *</label>
+                            <input type="text" id="city" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="cap">CAP *</label>
+                            <input type="text" id="cap" maxlength="5" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="province">Provincia *</label>
+                        <input type="text" id="province" maxlength="2" placeholder="Es: MI" required>
+                    </div>
+                    <div class="form-group" style="margin-top:25px;">
+                        <label><input type="checkbox" id="termsCheck" required> Accetto i <a href="#" style="color:var(--primary);text-decoration:underline;">Termini e Condizioni</a></label>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block btn-lg" id="payBtn" style="margin-top:15px;">
+                        <i class="fas fa-credit-card"></i> Paga Ora
+                    </button>
+                    <p style="text-align:center;margin-top:12px;font-size:0.8rem;color:#636e72;">
+                        <i class="fas fa-shield-halved"></i> Pagamento sicuro con Stripe
+                    </p>
+                </form>
+            </div>
+
+            <!-- Riepilogo -->
+            <div class="checkout-summary">
+                <h3 style="margin-bottom:20px;">Riepilogo Ordine</h3>
+                <div id="summaryItems"></div>
+                <div class="summary-item" style="margin-top:10px;">
+                    <span>Subtotale</span>
+                    <span id="summarySubtotal">€ 0,00</span>
+                </div>
+                <div class="summary-item">
+                    <span>Spedizione</span>
+                    <span id="summaryShipping">€ 0,00</span>
+                </div>
+                <div class="summary-total">
+                    <span>Totale</span>
+                    <span id="summaryTotal">€ 0,00</span>
+                </div>
+                <div id="freeShippingNote" style="background:#e8f8f5;padding:10px;border-radius:8px;text-align:center;font-size:0.85rem;color:#00b894;display:none;">
+                    <i class="fas fa-truck"></i> Spedizione gratuita!
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer class="footer">
+    <div class="container">
+        <div class="footer-bottom" style="border:none;padding-top:0;">
+            <p>&copy; 2026 DropShop Italia. Tutti i diritti riservati.</p>
+        </div>
+    </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script src="js/config.js"></script>
+<script src="js/products.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/automation.js"></script>
+<script>
+    // Init
+    document.addEventListener('DOMContentLoaded', () => {
+        ProductManager.init();
+        Cart.init();
+        renderSummary();
+    });
+
+    function renderSummary() {
+        const items = Cart.items;
+        const summaryItems = document.getElementById('summaryItems');
+
+        if (items.length === 0) {
+            window.location.href = 'index.html';
+            return;
+        }
+
+        summaryItems.innerHTML = items.map(item => `
+            <div class="summary-item">
+                <span>${item.name} x${item.qty}</span>
+                <span>${formatPrice(item.price * item.qty)}</span>
+            </div>
+        `).join('');
+
+        const subtotal = Cart.getTotal();
+        const shipping = Cart.getShipping();
+        const total = Cart.getGrandTotal();
+
+        document.getElementById('summarySubtotal').textContent = formatPrice(subtotal);
+        document.getElementById('summaryShipping').textContent = shipping === 0 ? 'Gratuita' : formatPrice(shipping);
+        document.getElementById('summaryTotal').textContent = formatPrice(total);
+
+        if (shipping === 0) {
+            document.getElementById('freeShippingNote').style.display = 'block';
+        }
+    }
+
+    // Form submit
+    document.getElementById('checkoutForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const btn = document.getElementById('payBtn');
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Elaborazione...';
+
+        // Raccogli dati ordine
+        const order = {
+            id: 'ORD-' + Date.now(),
+            date: new Date().toISOString(),
+            customer: {
+                firstName: document.getElementById('firstName').value,
+                lastName: document.getElementById('lastName').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                address: document.getElementById('address').value,
+                city: document.getElementById('city').value,
+                cap: document.getElementById('cap').value,
+                province: document.getElementById('province').value
+            },
+            items: Cart.items,
+            subtotal: Cart.getTotal(),
+            shipping: Cart.getShipping(),
+            total: Cart.getGrandTotal(),
+            status: 'pending'
+        };
+
+        // Salva ordine in localStorage (in produzione: Firebase)
+        const orders = JSON.parse(localStorage.getItem('dropshop_orders') || '[]');
+        orders.push(order);
+        localStorage.setItem('dropshop_orders', JSON.stringify(orders));
+
+        // Simula pagamento (in produzione: Stripe Checkout redirect)
+        setTimeout(async () => {
+            order.status = 'paid';
+            localStorage.setItem('dropshop_orders', JSON.stringify(orders));
+
+            // AUTOMAZIONE: inoltra ordine al fornitore + email conferma
+            try {
+                await Automation.processNewOrder(order);
+            } catch (err) {
+                console.warn('[Checkout] Automazione fallita:', err);
+            }
+
+            Cart.clear();
+            window.location.href = `conferma.html?orderId=${order.id}`;
+        }, 2000);
+    });
+
+    function showToast(msg, type) {
+        const t = document.getElementById('toast');
+        t.textContent = msg; t.className = 'toast show ' + type;
+        setTimeout(() => t.className = 'toast', 3000);
+    }
+</script>
+</body>
+</html>

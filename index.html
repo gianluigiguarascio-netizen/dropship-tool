@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DropShop Italia — Elettronica, Moda, Casa & Gadget</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+    <div class="container header-inner">
+        <a href="index.html" class="logo">
+            <i class="fas fa-bolt"></i> DropShop
+        </a>
+        <nav class="nav">
+            <a href="#" data-category="tutti">Tutti</a>
+            <a href="#" data-category="elettronica">Elettronica</a>
+            <a href="#" data-category="moda">Moda</a>
+            <a href="#" data-category="casa">Casa</a>
+            <a href="#" data-category="gadget">Gadget</a>
+        </nav>
+        <div class="header-actions">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Cerca prodotti...">
+                <i class="fas fa-search"></i>
+            </div>
+            <button class="cart-btn" id="cartBtn">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="cart-count" id="cartCount">0</span>
+            </button>
+        </div>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+</header>
+
+<!-- Hero Banner -->
+<section class="hero">
+    <div class="container">
+        <h1>Scopri i Migliori Prodotti</h1>
+        <p>Elettronica, Moda, Casa e Gadget — Spedizione veloce in tutta Italia</p>
+        <a href="#prodotti" class="btn btn-primary btn-lg">Esplora il Catalogo</a>
+    </div>
+</section>
+
+<!-- Categorie -->
+<section class="categories">
+    <div class="container">
+        <div class="categories-grid">
+            <div class="category-card" data-category="elettronica">
+                <i class="fas fa-laptop"></i>
+                <span>Elettronica</span>
+            </div>
+            <div class="category-card" data-category="moda">
+                <i class="fas fa-tshirt"></i>
+                <span>Moda</span>
+            </div>
+            <div class="category-card" data-category="casa">
+                <i class="fas fa-home"></i>
+                <span>Casa</span>
+            </div>
+            <div class="category-card" data-category="gadget">
+                <i class="fas fa-gamepad"></i>
+                <span>Gadget</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Prodotti -->
+<section class="products" id="prodotti">
+    <div class="container">
+        <h2 class="section-title">I Nostri Prodotti</h2>
+        <div class="products-toolbar">
+            <span id="productCountLabel">0 prodotti</span>
+            <select id="sortSelect">
+                <option value="default">Ordina per</option>
+                <option value="price-asc">Prezzo: basso > alto</option>
+                <option value="price-desc">Prezzo: alto > basso</option>
+                <option value="name-asc">Nome: A-Z</option>
+                <option value="newest">Novit&agrave;</option>
+            </select>
+        </div>
+        <div class="products-grid" id="productsGrid">
+            <!-- Products loaded dynamically -->
+        </div>
+        <div class="loading" id="loadingSpinner">
+            <div class="spinner"></div>
+            <p>Caricamento prodotti...</p>
+        </div>
+        <div class="no-results" id="noResults" style="display:none;">
+            <i class="fas fa-search"></i>
+            <p>Nessun prodotto trovato</p>
+        </div>
+    </div>
+</section>
+
+<!-- Vantaggi -->
+<section class="features">
+    <div class="container">
+        <div class="features-grid">
+            <div class="feature">
+                <i class="fas fa-truck-fast"></i>
+                <h3>Spedizione Veloce</h3>
+                <p>Consegna in 5-12 giorni lavorativi in tutta Italia</p>
+            </div>
+            <div class="feature">
+                <i class="fas fa-shield-halved"></i>
+                <h3>Pagamento Sicuro</h3>
+                <p>Transazioni protette con Stripe e PayPal</p>
+            </div>
+            <div class="feature">
+                <i class="fas fa-rotate-left"></i>
+                <h3>Reso Facile</h3>
+                <p>14 giorni per restituire senza problemi</p>
+            </div>
+            <div class="feature">
+                <i class="fas fa-headset"></i>
+                <h3>Assistenza 24/7</h3>
+                <p>Supporto clienti sempre disponibile</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div>
+                <h4><i class="fas fa-bolt"></i> DropShop</h4>
+                <p>Il tuo negozio online di fiducia per elettronica, moda, casa e gadget.</p>
+            </div>
+            <div>
+                <h4>Link Utili</h4>
+                <a href="#">Chi Siamo</a>
+                <a href="tracking.html">Traccia Ordine</a>
+                <a href="#">Resi e Rimborsi</a>
+                <a href="#">Contatti</a>
+            </div>
+            <div>
+                <h4>Contatti</h4>
+                <p><i class="fas fa-envelope"></i> info@dropshop.it</p>
+                <p><i class="fas fa-phone"></i> +39 0123 456789</p>
+            </div>
+            <div>
+                <h4>Seguici</h4>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-tiktok"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 DropShop Italia. Tutti i diritti riservati.</p>
+        </div>
+    </div>
+</footer>
+
+<!-- Cart Sidebar -->
+<div class="cart-overlay" id="cartOverlay"></div>
+<div class="cart-sidebar" id="cartSidebar">
+    <div class="cart-header">
+        <h3><i class="fas fa-shopping-cart"></i> Carrello</h3>
+        <button class="cart-close" id="cartClose"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="cart-items" id="cartItems">
+        <div class="cart-empty">
+            <i class="fas fa-cart-plus"></i>
+            <p>Il carrello è vuoto</p>
+        </div>
+    </div>
+    <div class="cart-footer" id="cartFooter" style="display:none;">
+        <div class="cart-total">
+            <span>Totale:</span>
+            <span id="cartTotal">€ 0,00</span>
+        </div>
+        <button class="btn btn-primary btn-block" id="checkoutBtn">
+            <i class="fas fa-lock"></i> Procedi al Pagamento
+        </button>
+    </div>
+</div>
+
+<!-- Product Quick View Modal -->
+<div class="modal-overlay" id="modalOverlay"></div>
+<div class="modal" id="productModal">
+    <button class="modal-close" id="modalClose"><i class="fas fa-times"></i></button>
+    <div class="modal-body" id="modalBody"></div>
+</div>
+
+<!-- Toast Notification -->
+<div class="toast" id="toast"></div>
+
+<script src="js/config.js"></script>
+<script src="js/products.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
