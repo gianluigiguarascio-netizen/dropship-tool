@@ -234,6 +234,86 @@ const PRODUCTS_DB = [
         stock: 200,
         sku: 'CJ-STD-004'
     },
+    {
+        id: 'ga-005',
+        name: 'Anello LED Selfie 26cm con Treppiede',
+        category: 'gadget',
+        supplierPrice: 9.00,
+        price: 24.99,
+        originalPrice: 34.99,
+        image: 'https://images.unsplash.com/photo-1616400619175-5beda3a17896?w=400&h=400&fit=crop',
+        images: [],
+        description: 'Ring light 26cm con 3 colori di luce e 10 livelli di luminosità. Treppiede regolabile fino a 1.9m, supporto smartphone incluso. Perfetto per video, streaming e foto.',
+        rating: 4.6,
+        reviews: 445,
+        badge: 'Bestseller',
+        stock: 120,
+        sku: 'CJ-GA-005'
+    },
+    {
+        id: 'ga-006',
+        name: 'Cavo USB-C Ricarica Rapida 100W 2m',
+        category: 'gadget',
+        supplierPrice: 2.50,
+        price: 8.99,
+        originalPrice: 12.99,
+        image: 'https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=400&h=400&fit=crop',
+        images: [],
+        description: 'Cavo USB-C a USB-C 100W per ricarica rapida e trasferimento dati 480Mbps. Nylon intrecciato ultra-resistente, compatibile con MacBook, iPad, Android. Lunghezza 2 metri.',
+        rating: 4.7,
+        reviews: 678,
+        badge: '',
+        stock: 500,
+        sku: 'CJ-GA-006'
+    },
+    {
+        id: 'ga-007',
+        name: 'Chiavetta USB 3.0 128GB',
+        category: 'gadget',
+        supplierPrice: 6.00,
+        price: 15.99,
+        originalPrice: 22.99,
+        image: 'https://images.unsplash.com/photo-1618410320928-25228d811631?w=400&h=400&fit=crop',
+        images: [],
+        description: 'Pendrive USB 3.0 da 128GB, velocità lettura 120MB/s, scrittura 30MB/s. Design compatto in metallo, cappuccio protettivo. Compatibile Windows, Mac, Linux e TV.',
+        rating: 4.5,
+        reviews: 289,
+        badge: '-30%',
+        stock: 200,
+        sku: 'CJ-GA-007'
+    },
+    {
+        id: 'ga-008',
+        name: 'Hub USB-C 7 in 1 Multiporta',
+        category: 'gadget',
+        supplierPrice: 11.00,
+        price: 28.99,
+        originalPrice: 39.99,
+        image: 'https://images.unsplash.com/photo-1625877988223-bd7710c9fa94?w=400&h=400&fit=crop',
+        images: [],
+        description: 'Hub USB-C 7 porte: HDMI 4K, 3x USB-A 3.0, SD/MicroSD, ricarica PD 100W. Alluminio premium, compatibile MacBook e laptop moderni. Plug & Play, nessun driver.',
+        rating: 4.4,
+        reviews: 167,
+        badge: 'Novità',
+        stock: 80,
+        sku: 'CJ-GA-008'
+    },
+    {
+        id: 'ga-009',
+        name: 'Mouse Wireless Silenzioso Ricaricabile',
+        category: 'gadget',
+        supplierPrice: 5.50,
+        price: 16.99,
+        originalPrice: 24.99,
+        image: 'https://images.unsplash.com/photo-1527814050087-3793815479db?w=400&h=400&fit=crop',
+        images: [],
+        description: 'Mouse wireless 2.4GHz silenzioso, DPI regolabile 800-1600, batteria ricaricabile USB-C fino a 60 giorni. Design ergonomico per destri e mancini.',
+        rating: 4.5,
+        reviews: 334,
+        badge: '',
+        stock: 150,
+        sku: 'CJ-GA-009'
+    },
     // === FERRAMENTA ===
     {
         id: 'fe-001',
@@ -333,6 +413,8 @@ const PRODUCTS_DB = [
     }
 ];
 
+const PRODUCTS_VERSION = '3'; // incrementare per forzare reset localStorage
+
 /**
  * Gestione prodotti
  * Legge da localStorage (gestiti dall'admin) o fallback su PRODUCTS_DB
@@ -341,13 +423,20 @@ const ProductManager = {
     products: [],
 
     init() {
-        // Priorità: prodotti salvati dall'admin in localStorage
-        const saved = localStorage.getItem('dropshop_products');
-        if (saved) {
-            try { this.products = JSON.parse(saved); } catch { this.products = PRODUCTS_DB; }
-        } else {
+        const savedVersion = localStorage.getItem('dropshop_products_version');
+        if (savedVersion !== PRODUCTS_VERSION) {
+            // Nuova versione: reset con prodotti aggiornati
             this.products = PRODUCTS_DB;
             localStorage.setItem('dropshop_products', JSON.stringify(PRODUCTS_DB));
+            localStorage.setItem('dropshop_products_version', PRODUCTS_VERSION);
+        } else {
+            const saved = localStorage.getItem('dropshop_products');
+            if (saved) {
+                try { this.products = JSON.parse(saved); } catch { this.products = PRODUCTS_DB; }
+            } else {
+                this.products = PRODUCTS_DB;
+                localStorage.setItem('dropshop_products', JSON.stringify(PRODUCTS_DB));
+            }
         }
         return this.products;
     },
