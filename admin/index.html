@@ -588,10 +588,10 @@
         localStorage.setItem('dropshop_cj_credentials', JSON.stringify({ email, password }));
 
         try {
-            const res = await fetch('https://developers.cjdropshipping.com/api2.0/v1/authentication/getAccessToken', {
+            const res = await fetch('/.netlify/functions/cj-proxy', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, password })
+                body: JSON.stringify({ endpoint: '/authentication/getAccessToken', method: 'POST', body: { email, password } })
             });
             const data = await res.json();
             if (data.result && data.data?.accessToken) {

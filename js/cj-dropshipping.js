@@ -4,7 +4,7 @@
  */
 
 const CJDropshipping = {
-    baseUrl: 'https://developers.cjdropshipping.com/api2.0/v1',
+    baseUrl: '/.netlify/functions/cj-proxy',
     accessToken: null,
     tokenExpiry: null,
 
@@ -17,8 +17,16 @@ const CJDropshipping = {
         return !!(creds.email && creds.password);
     },
 
+    async callProxy(endpoint, method = 'GET', body = null, token = null) {
+        const res = await fetch(this.baseUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ endpoint, method, body, token })
+        });
+        return res.json();
+    },
+
     async getAccessToken() {
-        // Riusa token se ancora valido
         if (this.accessToken && this.tokenExpiry && new Date() < new Date(this.tokenExpiry)) {
             return this.accessToken;
         }
@@ -30,12 +38,9 @@ const CJDropshipping = {
         }
 
         try {
-            const res = await fetch(`${this.baseUrl}/authentication/getAccessToken`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email: creds.email, password: creds.password })
+            const data = await this.callProxy('/authentication/getAccessToken', 'POST', {
+                email: creds.email, password: creds.password
             });
-            const data = await res.json();
 
             if (data.result && data.data?.accessToken) {
                 this.accessToken = data.data.accessToken;
@@ -50,16 +55,9 @@ const CJDropshipping = {
         }
     },
 
-    // Crea ordine su CJDropshipping
     async createOrder(order) {
         const token = await this.getAccessToken();
         if (!token) return { success: false, error: 'Token non disponibile' };
-
-        const products = order.items.map(item => ({
-            vid: item.sku || item.id,
-            quantity: item.qty,
-            shippingName: 'CJPacket'
-        }));
 
         const body = {
             orderNumber: order.id,
@@ -70,22 +68,16 @@ const CJDropshipping = {
             shippingCity: order.customer.city,
             shippingProvince: order.customer.province,
             shippingZip: order.customer.cap,
-            products
+            products: order.items.map(item => ({
+                vid: item.sku || item.id,
+                quantity: item.qty,
+                shippingName: 'CJPacket'
+            }))
         };
 
         try {
-            const res = await fetch(`${this.baseUrl}/shopping/order/createOrder`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'CJ-Access-Token': token
-                },
-                body: JSON.stringify(body)
-            });
-            const data = await res.json();
-
+            const data = await this.callProxy('/shopping/order/createOrder', 'POST', body, token);
             if (data.result) {
-                console.log('[CJ] Ordine creato:', data.data?.orderId);
                 return { success: true, cjOrderId: data.data?.orderId };
             }
             return { success: false, error: data.message };
@@ -94,36 +86,22 @@ const CJDropshipping = {
         }
     },
 
-    // Controlla stato spedizione
     async getOrderStatus(cjOrderId) {
         const token = await this.getAccessToken();
         if (!token) return null;
-
         try {
-            const res = await fetch(`${this.baseUrl}/shopping/order/getOrderDetail?orderId=${cjOrderId}`, {
-                headers: { 'CJ-Access-Token': token }
-            });
-            const data = await res.json();
+            const data = await this.callProxy(`/shopping/order/getOrderDetail?orderId=${cjOrderId}`, 'GET', null, token);
             return data.result ? data.data : null;
-        } catch (err) {
-            return null;
-        }
+        } catch (err) { return null; }
     },
 
-    // Cerca prodotti su CJ
     async searchProducts(keyword, page = 1) {
         const token = await this.getAccessToken();
         if (!token) return [];
-
         try {
-            const res = await fetch(`${this.baseUrl}/product/list?productName=${encodeURIComponent(keyword)}&pageNum=${page}&pageSize=20`, {
-                headers: { 'CJ-Access-Token': token }
-            });
-            const data = await res.json();
+            const data = await this.callProxy(`/product/list?productName=${encodeURIComponent(keyword)}&pageNum=${page}&pageSize=20`, 'GET', null, token);
             return data.result ? (data.data?.list || []) : [];
-        } catch (err) {
-            return [];
-        }
+        } catch (err) { return []; }
     }
 };
 
