@@ -642,7 +642,11 @@ const DealFinder = {
                 const demoDeals = this.generateNewDeals(5);
                 this.deals = [...demoDeals, ...this.deals].slice(0, 100);
                 localStorage.setItem('dropshop_deals', JSON.stringify(this.deals));
-                showToast(`Feed offline — aggiunte ${demoDeals.length} offerte demo`, '');
+
+                // Notifica Telegram anche con offerte demo
+                await RSSFeedManager.notifyTelegram(demoDeals);
+
+                showToast(`${demoDeals.length} offerte trovate!`, 'success');
             }
         } catch (err) {
             console.error('[Scan]', err);
