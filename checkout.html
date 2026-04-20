@@ -144,6 +144,7 @@
 <script src="js/products.js"></script>
 <script src="js/cart.js"></script>
 <script src="js/automation.js"></script>
+<script type="module" src="js/firebase-db.js"></script>
 <script>
     // Init
     document.addEventListener('DOMContentLoaded', () => {
@@ -248,10 +249,11 @@
             status: 'paid'
         };
 
-        // Salva ordine
+        // Salva ordine su Firebase + localStorage come backup
         const orders = JSON.parse(localStorage.getItem('dropshop_orders') || '[]');
         orders.push(order);
         localStorage.setItem('dropshop_orders', JSON.stringify(orders));
+        if (window.FirebaseDB) await window.FirebaseDB.saveOrder(order);
 
         // Notifica Telegram nuovo ordine
         try {

@@ -25,14 +25,14 @@ const CONFIG = {
         mode: 'test'
     },
 
-    // Firebase (sostituisci con le tue credenziali)
+    // Firebase
     firebase: {
-        apiKey: '',
-        authDomain: '',
-        projectId: '',
-        storageBucket: '',
-        messagingSenderId: '',
-        appId: ''
+        apiKey: 'AIzaSyDNqLkTmqkv68OZmRKJ5sMHaXM_NvH4Ozc',
+        authDomain: 'dropshop-italia.firebaseapp.com',
+        projectId: 'dropshop-italia',
+        storageBucket: 'dropshop-italia.firebasestorage.app',
+        messagingSenderId: '207007343965',
+        appId: '1:207007343965:web:85547054490b287cdcb4b4'
     },
 
     // CJDropshipping API
