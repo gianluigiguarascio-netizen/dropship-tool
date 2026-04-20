@@ -21,8 +21,8 @@ const CONFIG = {
 
     // Stripe
     stripe: {
-        publishableKey: 'pk_test_51TONQt7XUVJ6sgO3tzeXTmPUPUXsTBVWra553hlEiYQD9iQvXQ8SiTrKEEAUtOZizA8cJEp2qG8oDWZpNRbACgzf009raqmrHi',
-        mode: 'test'
+        publishableKey: 'pk_live_51TONQI56X25NY8YHL30Ix4SVDRTPGszCyQocCDqMCaUT8ohgI1MPnmTzceRIBc4YhxKX84PN8TSa0tLotAYKYUIP005p1y9cxU',
+        mode: 'live'
     },
 
     // Firebase
