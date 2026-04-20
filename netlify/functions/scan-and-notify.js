@@ -9,16 +9,24 @@ const CHANNEL_ID = '@dropshopofferte';
 const SHOP_URL = 'https://dropshop-italia.netlify.app';
 
 const DEALS = [
-    { title: 'Auricolari Bluetooth TWS Pro', orig: 89.99, cat: 'elettronica', img: 'https://images.unsplash.com/photo-1590658268037-6bf12f032f55?w=400&h=400&fit=crop' },
-    { title: 'Smartwatch Fitness AMOLED GPS', orig: 199.99, cat: 'elettronica', img: 'https://images.unsplash.com/photo-1579586337278-3befd40fd17a?w=400&h=400&fit=crop' },
-    { title: 'Mini Drone 4K Pieghevole', orig: 249.99, cat: 'gadget', img: 'https://images.unsplash.com/photo-1473968512647-3e447244af8f?w=400&h=400&fit=crop' },
-    { title: 'Lampada LED Smart RGB WiFi', orig: 39.99, cat: 'casa', img: 'https://images.unsplash.com/photo-1507473885765-e6ed057ab6fe?w=400&h=400&fit=crop' },
-    { title: 'Zaino Antifurto USB 25L', orig: 69.99, cat: 'moda', img: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&h=400&fit=crop' },
-    { title: 'Power Bank Solare 20000mAh', orig: 59.99, cat: 'gadget', img: 'https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=400&h=400&fit=crop' },
+    // ELETTRONICA
+    { title: 'Auricolari Bluetooth TWS Pro ANC 40h', orig: 89.99, cat: 'elettronica', img: 'https://images.unsplash.com/photo-1590658268037-6bf12f032f55?w=400&h=400&fit=crop' },
+    { title: 'Smartwatch Fitness AMOLED GPS SpO2', orig: 199.99, cat: 'elettronica', img: 'https://images.unsplash.com/photo-1579586337278-3befd40fd17a?w=400&h=400&fit=crop' },
+    { title: 'Mini Drone 4K Pieghevole Gimbal 3 Assi', orig: 249.99, cat: 'elettronica', img: 'https://images.unsplash.com/photo-1473968512647-3e447244af8f?w=400&h=400&fit=crop' },
     { title: 'Caricatore Wireless Magnetico 15W', orig: 34.99, cat: 'elettronica', img: 'https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=400&h=400&fit=crop' },
-    { title: 'Tastiera Meccanica RGB Wireless', orig: 79.99, cat: 'gadget', img: 'https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?w=400&h=400&fit=crop' },
-    { title: 'Diffusore Aromi Ultrasuoni 300ml', orig: 44.99, cat: 'casa', img: 'https://images.unsplash.com/photo-1602928321679-560bb453f190?w=400&h=400&fit=crop' },
-    { title: 'Occhiali da Sole Polarizzati UV400', orig: 49.99, cat: 'moda', img: 'https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=400&h=400&fit=crop' },
+    { title: 'Tastiera Meccanica RGB Wireless 65%', orig: 79.99, cat: 'elettronica', img: 'https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?w=400&h=400&fit=crop' },
+    { title: 'Telecamera WiFi 2K 360° Visione Notturna', orig: 49.99, cat: 'elettronica', img: 'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=400&h=400&fit=crop' },
+    { title: 'Mini Proiettore Portatile 1080p WiFi', orig: 129.99, cat: 'elettronica', img: 'https://images.unsplash.com/photo-1626379953822-baec19c3accd?w=400&h=400&fit=crop' },
+    { title: 'Power Bank Solare 20000mAh 22.5W', orig: 59.99, cat: 'elettronica', img: 'https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=400&h=400&fit=crop' },
+    // BAMBINI
+    { title: 'Macchina Radiocomandata Offroad 4x4', orig: 49.99, cat: 'bambini', img: 'https://images.unsplash.com/photo-1581235720704-06d3acfcb36f?w=400&h=400&fit=crop' },
+    { title: 'Tablet Bambini 7" con Custodia Antiurto', orig: 89.99, cat: 'bambini', img: 'https://images.unsplash.com/photo-1561154464-82e9adf32764?w=400&h=400&fit=crop' },
+    { title: 'Set LEGO Tecnico 500 Pezzi', orig: 59.99, cat: 'bambini', img: 'https://images.unsplash.com/photo-1587654780291-39c9404d746b?w=400&h=400&fit=crop' },
+    { title: 'Cuffie Bambini Wireless Volume Limitato', orig: 39.99, cat: 'bambini', img: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=400&fit=crop' },
+    { title: 'Monopattino Elettrico Bambini 6-12 anni', orig: 149.99, cat: 'bambini', img: 'https://images.unsplash.com/photo-1571068316344-75bc76f77890?w=400&h=400&fit=crop' },
+    { title: 'Kit Pittura Bambini 120 Colori', orig: 29.99, cat: 'bambini', img: 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=400&h=400&fit=crop' },
+    { title: 'Tenda Gioco Bambini Castello Principessa', orig: 44.99, cat: 'bambini', img: 'https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?w=400&h=400&fit=crop' },
+    { title: 'Robot Programmabile STEM Bambini 8+', orig: 69.99, cat: 'bambini', img: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=400&h=400&fit=crop' },
 ];
 
 async function sendTelegram(chatId, text, imageUrl = null) {

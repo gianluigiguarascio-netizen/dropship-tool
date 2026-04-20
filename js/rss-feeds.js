@@ -4,6 +4,7 @@
  */
 
 const RSS_FEEDS = [
+    // === ELETTRONICA ===
     {
         name: 'Amazon IT — Bestseller Elettronica',
         url: 'https://www.amazon.it/gp/rss/bestsellers/electronics/',
@@ -19,6 +20,64 @@ const RSS_FEEDS = [
         icon: 'fab fa-amazon'
     },
     {
+        name: 'Tom\'s Hardware IT — Tech',
+        url: 'https://www.tomshw.it/feed/',
+        source: 'tomshardware',
+        category: 'elettronica',
+        icon: 'fas fa-microchip'
+    },
+    {
+        name: 'HWUpgrade — Hardware & Tech',
+        url: 'https://www.hwupgrade.it/rss/news.xml',
+        source: 'hwupgrade',
+        category: 'elettronica',
+        icon: 'fas fa-microchip'
+    },
+    {
+        name: 'GizChina Italia — Gadget Cinesi',
+        url: 'https://gizchina.it/feed/',
+        source: 'gizchina',
+        category: 'elettronica',
+        icon: 'fas fa-mobile-alt'
+    },
+    {
+        name: 'Multiplayer.it — Gaming & Tech',
+        url: 'https://www.multiplayer.it/feed/',
+        source: 'multiplayer',
+        category: 'elettronica',
+        icon: 'fas fa-gamepad'
+    },
+    // === BAMBINI ===
+    {
+        name: 'Amazon IT — Bestseller Bambini',
+        url: 'https://www.amazon.it/gp/rss/bestsellers/toys/',
+        source: 'amazon',
+        category: 'bambini',
+        icon: 'fab fa-amazon'
+    },
+    {
+        name: 'Amazon IT — Bestseller Neonati',
+        url: 'https://www.amazon.it/gp/rss/bestsellers/baby/',
+        source: 'amazon',
+        category: 'bambini',
+        icon: 'fab fa-amazon'
+    },
+    {
+        name: 'Nostro Figlio — Prodotti Bambini',
+        url: 'https://www.nostrofiglio.it/feed/',
+        source: 'nostrofiglio',
+        category: 'bambini',
+        icon: 'fas fa-baby'
+    },
+    {
+        name: 'Bimbisani — Giochi & Bambini',
+        url: 'https://www.bimbisani.com/feed/',
+        source: 'bimbisani',
+        category: 'bambini',
+        icon: 'fas fa-baby-carriage'
+    },
+    // === OFFERTE GENERALI ===
+    {
         name: 'Sconti.info — Offerte Italia',
         url: 'https://www.sconti.info/feed/',
         source: 'sconti.info',
@@ -31,13 +90,6 @@ const RSS_FEEDS = [
         source: 'offertissime',
         category: 'varie',
         icon: 'fas fa-fire'
-    },
-    {
-        name: 'Tom\'s Hardware IT — Tech Deals',
-        url: 'https://www.tomshw.it/feed/',
-        source: 'tomshardware',
-        category: 'elettronica',
-        icon: 'fas fa-microchip'
     }
 ];
 
