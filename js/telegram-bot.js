@@ -18,8 +18,8 @@ const TelegramBot = {
 
     init() {
         const settings = JSON.parse(localStorage.getItem('dropshop_deal_settings') || '{}');
-        this.token = settings.telegramToken || '';
-        this.chatId = settings.telegramChatId || '';
+        this.token = settings.telegramToken || (typeof CONFIG !== 'undefined' ? CONFIG.telegram.token : '');
+        this.chatId = settings.telegramChatId || (typeof CONFIG !== 'undefined' ? CONFIG.telegram.chatId : '');
     },
 
     isConfigured() {

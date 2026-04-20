@@ -41,6 +41,12 @@ const CONFIG = {
         baseUrl: 'https://developers.cjdropshipping.com/api2.0/v1'
     },
 
+    // Telegram Bot
+    telegram: {
+        token: '8548180810:AAEs1LTBMOXXiibvgQXfhUZoqtf8rm9qKpg',
+        chatId: '787961523'
+    },
+
     // Email notifiche (configurare con EmailJS o servizio simile)
     email: {
         serviceId: '',
