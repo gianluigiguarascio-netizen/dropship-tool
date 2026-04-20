@@ -154,7 +154,7 @@ ${newProducts.slice(0, 3).map(p =>
 
 ${newProducts.length > 3 ? `<i>...e altri ${newProducts.length - 3} prodotti</i>` : ''}
 
-🔗 <a href="https://gianluigiguarascio-netizen.github.io/dropship-tool/admin/deals.html">Vedi tutti nell'admin →</a>`;
+🔗 <a href="https://dropshop-italia.netlify.app/admin/deals.html">Vedi tutti nell'admin →</a>`;
 
         try {
             await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
