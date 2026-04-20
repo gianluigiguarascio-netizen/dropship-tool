@@ -170,7 +170,7 @@ ${newProducts.length > 3 ? `<i>...e altri ${newProducts.length - 3} prodotti</i>
 
         // Pubblica le migliori offerte sul canale pubblico
         if (channelId) {
-            const best = newProducts.filter(p => p.discount >= 70).slice(0, 3);
+            const best = newProducts.filter(p => p.discount >= 30).slice(0, 3);
             for (const deal of best) {
                 const text = `🔥 <b>OFFERTA DEL GIORNO!</b>
 
