@@ -429,12 +429,19 @@
                 <td><span class="badge badge-${o.status}">${statusLabel(o.status)}</span></td>
                 <td>${new Date(o.date).toLocaleDateString('it-IT')}</td>
                 <td>
-                    <select onchange="updateOrderStatus('${o.id}', this.value)" style="padding:5px;border-radius:6px;border:1px solid #ddd;font-size:0.8rem;">
+                    <select onchange="updateOrderStatus('${o.id}', this.value)" style="padding:5px;border-radius:6px;border:1px solid #ddd;font-size:0.8rem;margin-bottom:6px;">
                         <option value="pending" ${o.status==='pending'?'selected':''}>In Attesa</option>
                         <option value="paid" ${o.status==='paid'?'selected':''}>Pagato</option>
                         <option value="shipped" ${o.status==='shipped'?'selected':''}>Spedito</option>
                         <option value="delivered" ${o.status==='delivered'?'selected':''}>Consegnato</option>
                     </select>
+                    <br>
+                    ${(o.items||[]).map(i => `
+                        <a href="https://cjdropshipping.com/search?q=${encodeURIComponent(i.name)}" target="_blank"
+                           style="display:inline-flex;align-items:center;gap:4px;background:#e67e22;color:#fff;padding:4px 8px;border-radius:6px;font-size:0.75rem;font-weight:600;text-decoration:none;margin-top:2px;">
+                           <i class="fas fa-box"></i> Ordina su CJ
+                        </a>
+                    `).join('')}
                 </td>
             </tr>`;
         }).join('');
