@@ -220,7 +220,7 @@ ${newProducts.slice(0, 3).map(p =>
 
 ${newProducts.length > 3 ? `<i>...e altri ${newProducts.length - 3} prodotti</i>` : ''}
 
-🔗 <a href="https://dropshop-italia.netlify.app/admin/deals.html">Vedi tutti nell'admin →</a>`;
+🔗 <a href="https://dropship-tool-ecru.vercel.app/admin/deals.html">Vedi tutti nell'admin →</a>`;
 
             try {
                 await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
@@ -243,7 +243,7 @@ ${newProducts.length > 3 ? `<i>...e altri ${newProducts.length - 3} prodotti</i>
 ❌ <s>€ ${deal.originalPrice.toFixed(2)}</s>
 📉 Sconto: <b>-${deal.discount}%</b>
 
-🛒 <a href="https://dropshop-italia.netlify.app">Acquista su DropShop Italia →</a>
+🛒 <a href="https://dropship-tool-ecru.vercel.app">Acquista su DropShop Italia →</a>
 
 📢 @dropshopofferte`;
                 try {

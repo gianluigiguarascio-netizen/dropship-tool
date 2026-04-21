@@ -6,7 +6,7 @@
 const TELEGRAM_TOKEN = '8548180810:AAEs1LTBMOXXiibvgQXfhUZoqtf8rm9qKpg';
 const CHAT_ID = '787961523';
 const CHANNEL_ID = '@dropshopofferte';
-const SHOP_URL = 'https://dropshop-italia.netlify.app';
+const SHOP_URL = 'https://dropship-tool-ecru.vercel.app';
 
 // Gruppi dove il bot è admin — aggiungi qui i chat_id dei tuoi gruppi
 const GROUPS = [];

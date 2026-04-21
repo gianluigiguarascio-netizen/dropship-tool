@@ -5,7 +5,7 @@
 
 const TELEGRAM_TOKEN = '8548180810:AAEs1LTBMOXXiibvgQXfhUZoqtf8rm9qKpg';
 const CHANNEL = '@dropshopofferte';
-const SHOP_URL = 'https://dropshop-italia.netlify.app';
+const SHOP_URL = 'https://dropship-tool-ecru.vercel.app';
 
 async function sendMessage(chatId, text, keyboard = null) {
     const body = {

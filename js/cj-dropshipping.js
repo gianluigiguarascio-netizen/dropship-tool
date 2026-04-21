@@ -4,7 +4,7 @@
  */
 
 const CJDropshipping = {
-    baseUrl: '/.netlify/functions/cj-proxy',
+    baseUrl: '/api/cj-proxy',
     accessToken: null,
     tokenExpiry: null,
 
