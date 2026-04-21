@@ -8,7 +8,7 @@ const CHAT_ID = '787961523';
 const CHANNEL_ID = '@dropshopofferte';
 const FIREBASE_API_KEY = 'AIzaSyDNqLkTmqkv68OZmRKJ5sMHaXM_NvH4Ozc';
 const PROJECT_ID = 'dropshop-italia';
-const SHOP_URL = 'https://dropship-tool-ecru.vercel.app';
+const SHOP_URL = 'https://dropship-tool-ecru.vercel.app'; // aggiornare con dominio PrezzoTop
 const RSS2JSON_API = 'https://api.rss2json.com/v1/api.json';
 
 const RSS_FEEDS = [
@@ -164,7 +164,7 @@ export default async function handler(req, res) {
 ❌ <s>€${p.originalPrice.toFixed(2)}</s>
 📉 Sconto: <b>-${p.discount}%</b>
 
-🛒 <a href="${SHOP_URL}?cat=${p.category}">Vedi nel negozio →</a>
+🔥 <a href="${SHOP_URL}?cat=${p.category}">Vedi offerta su PrezzoTop →</a>
 
 📢 @dropshopofferte`;
         await sendTelegram(CHANNEL_ID, text, p.image);
@@ -179,7 +179,7 @@ export default async function handler(req, res) {
 📣 Postati su Telegram: <b>${top10.length}</b>
 🕐 ${new Date().toLocaleString('it-IT', { timeZone: 'Europe/Rome' })}
 
-🔗 <a href="${SHOP_URL}">Vedi il negozio →</a>`);
+🔗 <a href="${SHOP_URL}">Apri PrezzoTop →</a>`);
 
     res.status(200).json({ success: true, found: allProducts.length, saved: best.length });
 }

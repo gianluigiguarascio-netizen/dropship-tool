@@ -3,212 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DropShop Italia — Elettronica, Moda, Casa & Gadget</title>
-    <link rel="stylesheet" href="css/style.css?v=2">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <title>PrezzoTop — Le Migliori Offerte del Web</title>
+    <meta name="description" content="Le migliori offerte e sconti dal web aggiornate ogni ora. Risparmia su elettronica, casa, moda, bambini e tanto altro.">
+    <link rel="stylesheet" href="css/style.css?v=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
-<!-- Header -->
+<!-- HEADER -->
 <header class="header">
     <div class="container header-inner">
-        <a href="index.html" class="logo">
-            <i class="fas fa-bolt"></i> DropShop
-        </a>
-        <nav class="nav">
-            <a href="#" data-category="tutti">Tutti</a>
-            <a href="#" data-category="elettronica">Elettronica</a>
-            <a href="#" data-category="moda">Moda</a>
-            <a href="#" data-category="casa">Casa</a>
-            <a href="#" data-category="gadget">Gadget</a>
-            <a href="#" data-category="ferramenta">Ferramenta</a>
-            <a href="#" data-category="donna">Donna</a>
-        </nav>
-        <div class="header-actions">
-            <div class="search-box">
-                <input type="text" id="searchInput" placeholder="Cerca prodotti...">
-                <i class="fas fa-search"></i>
-            </div>
-            <button class="cart-btn" id="cartBtn">
-                <i class="fas fa-shopping-cart"></i>
-                <span class="cart-count" id="cartCount">0</span>
-            </button>
+        <div class="logo">
+            <span class="logo-prezzo">Prezzo</span><span class="logo-top">Top</span>
+            <span class="logo-tag">🔥 Offerte Live</span>
         </div>
-        <button class="mobile-menu-btn" id="mobileMenuBtn">
-            <i class="fas fa-bars"></i>
-        </button>
+        <div class="header-right">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Cerca offerte...">
+            </div>
+            <a href="https://t.me/dropshopofferte" target="_blank" class="telegram-btn">
+                <i class="fab fa-telegram"></i> Canale Offerte
+            </a>
+        </div>
     </div>
 </header>
 
-<!-- Hero Banner -->
+<!-- HERO -->
 <section class="hero">
     <div class="container">
-        <h1>Scopri i Migliori Prodotti</h1>
-        <p>Elettronica, Moda, Casa e Gadget — Spedizione veloce in tutta Italia</p>
-        <a href="#prodotti" class="btn btn-primary btn-lg">Esplora il Catalogo</a>
-    </div>
-</section>
-
-<!-- Categorie -->
-<section class="categories">
-    <div class="container">
-        <div class="categories-grid">
-            <div class="category-card" data-category="elettronica">
-                <i class="fas fa-laptop"></i>
-                <span>Elettronica</span>
-            </div>
-            <div class="category-card" data-category="moda">
-                <i class="fas fa-tshirt"></i>
-                <span>Moda</span>
-            </div>
-            <div class="category-card" data-category="casa">
-                <i class="fas fa-home"></i>
-                <span>Casa</span>
-            </div>
-            <div class="category-card" data-category="gadget">
-                <i class="fas fa-gamepad"></i>
-                <span>Gadget</span>
-            </div>
-            <div class="category-card" data-category="ferramenta">
-                <i class="fas fa-tools"></i>
-                <span>Ferramenta</span>
-            </div>
-            <div class="category-card" data-category="donna">
-                <i class="fas fa-female"></i>
-                <span>Donna</span>
-            </div>
+        <h1>Le migliori offerte del web<br><span>aggiornate ogni ora</span></h1>
+        <p>Trova sconti reali su Amazon e i migliori shop italiani. Clicca e risparmia subito.</p>
+        <div class="hero-stats">
+            <div class="stat"><strong id="totalDeals">—</strong><span>Offerte live</span></div>
+            <div class="stat"><strong>Ogni ora</strong><span>Aggiornamento</span></div>
+            <div class="stat"><strong>-90%</strong><span>Sconto massimo</span></div>
         </div>
     </div>
 </section>
 
-<!-- Prodotti -->
-<section class="products" id="prodotti">
+<!-- FILTRI CATEGORIA -->
+<section class="filters-section">
     <div class="container">
-        <h2 class="section-title">I Nostri Prodotti</h2>
-        <div class="products-toolbar">
-            <span id="productCountLabel">0 prodotti</span>
+        <div class="filters" id="categoryFilters">
+            <button class="filter-btn active" data-cat="tutti">🔥 Tutti</button>
+            <button class="filter-btn" data-cat="elettronica">📱 Elettronica</button>
+            <button class="filter-btn" data-cat="casa">🏠 Casa</button>
+            <button class="filter-btn" data-cat="moda">👔 Moda</button>
+            <button class="filter-btn" data-cat="bambini">🧸 Bambini</button>
+            <button class="filter-btn" data-cat="sport">💪 Sport</button>
+            <button class="filter-btn" data-cat="bellezza">💄 Bellezza</button>
+        </div>
+        <div class="sort-bar">
             <select id="sortSelect">
-                <option value="default">Ordina per</option>
-                <option value="price-asc">Prezzo: basso > alto</option>
-                <option value="price-desc">Prezzo: alto > basso</option>
-                <option value="name-asc">Nome: A-Z</option>
-                <option value="newest">Novit&agrave;</option>
+                <option value="discount">Sconto maggiore</option>
+                <option value="price-asc">Prezzo crescente</option>
+                <option value="price-desc">Prezzo decrescente</option>
+                <option value="newest">Più recenti</option>
             </select>
-        </div>
-        <div class="products-grid" id="productsGrid">
-            <!-- Products loaded dynamically -->
-        </div>
-        <div class="loading" id="loadingSpinner">
-            <div class="spinner"></div>
-            <p>Caricamento prodotti...</p>
-        </div>
-        <div class="no-results" id="noResults" style="display:none;">
-            <i class="fas fa-search"></i>
-            <p>Nessun prodotto trovato</p>
+            <span id="dealsCount" class="deals-count">Caricamento...</span>
         </div>
     </div>
 </section>
 
-<!-- Vantaggi -->
-<section class="features">
-    <div class="container">
-        <div class="features-grid">
-            <div class="feature">
-                <i class="fas fa-truck-fast"></i>
-                <h3>Spedizione Veloce</h3>
-                <p>Consegna in 5-12 giorni lavorativi in tutta Italia</p>
-            </div>
-            <div class="feature">
-                <i class="fas fa-shield-halved"></i>
-                <h3>Pagamento Sicuro</h3>
-                <p>Transazioni protette con Stripe e PayPal</p>
-            </div>
-            <div class="feature">
-                <i class="fas fa-rotate-left"></i>
-                <h3>Reso Facile</h3>
-                <p>14 giorni per restituire senza problemi</p>
-            </div>
-            <div class="feature">
-                <i class="fas fa-headset"></i>
-                <h3>Assistenza 24/7</h3>
-                <p>Supporto clienti sempre disponibile</p>
-            </div>
-        </div>
+<!-- DEALS GRID -->
+<main class="container">
+    <div id="loadingSpinner" class="loading">
+        <div class="spinner"></div>
+        <p>Ricerca offerte in corso...</p>
     </div>
-</section>
+    <div id="dealsGrid" class="deals-grid"></div>
+    <div id="noResults" class="no-results" style="display:none;">
+        <i class="fas fa-search"></i>
+        <p>Nessuna offerta trovata.</p>
+    </div>
+    <button id="loadMore" class="load-more" style="display:none;">
+        <i class="fas fa-plus"></i> Carica altre offerte
+    </button>
+</main>
 
-<!-- Footer -->
+<!-- FOOTER -->
 <footer class="footer">
     <div class="container">
         <div class="footer-grid">
             <div>
-                <h4><i class="fas fa-bolt"></i> DropShop</h4>
-                <p>Il tuo negozio online di fiducia per elettronica, moda, casa e gadget.</p>
+                <div class="logo" style="margin-bottom:10px;">
+                    <span class="logo-prezzo">Prezzo</span><span class="logo-top">Top</span>
+                </div>
+                <p>Aggregatore di offerte italiane. Prezzi e disponibilità possono variare.</p>
             </div>
             <div>
-                <h4>Link Utili</h4>
-                <a href="#">Chi Siamo</a>
-                <a href="tracking.html">Traccia Ordine</a>
-                <a href="#">Resi e Rimborsi</a>
-                <a href="#">Contatti</a>
-            </div>
-            <div>
-                <h4>Contatti</h4>
-                <p><i class="fas fa-envelope"></i> info@dropshop.it</p>
-                <p><i class="fas fa-phone"></i> +39 0123 456789</p>
+                <h4>Categorie</h4>
+                <ul>
+                    <li><a href="#" onclick="filterCat('elettronica')">Elettronica</a></li>
+                    <li><a href="#" onclick="filterCat('casa')">Casa & Cucina</a></li>
+                    <li><a href="#" onclick="filterCat('moda')">Moda</a></li>
+                    <li><a href="#" onclick="filterCat('bambini')">Bambini</a></li>
+                </ul>
             </div>
             <div>
                 <h4>Seguici</h4>
-                <div class="social-links">
-                    <a href="#"><i class="fab fa-facebook"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-tiktok"></i></a>
-                </div>
+                <a href="https://t.me/dropshopofferte" target="_blank" class="social-link">
+                    <i class="fab fa-telegram"></i> @dropshopofferte
+                </a>
+                <p style="margin-top:15px;font-size:0.8rem;opacity:0.6;">
+                    Sito affiliato Amazon Associates. Acquistando tramite i nostri link potremmo ricevere una commissione senza costi aggiuntivi per te.
+                </p>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2026 DropShop Italia. Tutti i diritti riservati.</p>
+            <p>© 2025 PrezzoTop — Tutti i diritti riservati</p>
         </div>
     </div>
 </footer>
 
-<!-- Cart Sidebar -->
-<div class="cart-overlay" id="cartOverlay"></div>
-<div class="cart-sidebar" id="cartSidebar">
-    <div class="cart-header">
-        <h3><i class="fas fa-shopping-cart"></i> Carrello</h3>
-        <button class="cart-close" id="cartClose"><i class="fas fa-times"></i></button>
-    </div>
-    <div class="cart-items" id="cartItems">
-        <div class="cart-empty">
-            <i class="fas fa-cart-plus"></i>
-            <p>Il carrello è vuoto</p>
-        </div>
-    </div>
-    <div class="cart-footer" id="cartFooter" style="display:none;">
-        <div class="cart-total">
-            <span>Totale:</span>
-            <span id="cartTotal">€ 0,00</span>
-        </div>
-        <button class="btn btn-primary btn-block" id="checkoutBtn">
-            <i class="fas fa-lock"></i> Procedi al Pagamento
-        </button>
-    </div>
-</div>
-
-<!-- Product Quick View Modal -->
-<div class="modal-overlay" id="modalOverlay"></div>
-<div class="modal" id="productModal">
-    <button class="modal-close" id="modalClose"><i class="fas fa-times"></i></button>
-    <div class="modal-body" id="modalBody"></div>
-</div>
-
-<!-- Toast Notification -->
-<div class="toast" id="toast"></div>
-
-<script src="js/config.js?v=4"></script>
-<script src="js/products.js?v=4"></script>
-<script src="js/cart.js?v=4"></script>
-<script src="js/app.js?v=4"></script>
+<script src="js/app.js?v=1"></script>
 </body>
 </html>
