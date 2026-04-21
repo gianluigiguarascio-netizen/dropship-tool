@@ -157,7 +157,7 @@ const RSSFeedManager = {
             rating: (3.5 + Math.random() * 1.5).toFixed(1) * 1,
             reviews: Math.floor(50 + Math.random() * 2000),
             category: feed.category,
-            url: item.link || '#',
+            url: (() => { const u = item.link || '#'; return u.includes('amazon.it') ? u + (u.includes('?') ? '&' : '?') + 'tag=prezzotop08-21' : u; })(),
             foundAt: new Date().toISOString(),
             isError: discount >= 80,
             description: item.description
