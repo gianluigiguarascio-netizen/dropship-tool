@@ -40,22 +40,6 @@ const PRODUCTS_DB = [
         sku: 'CJ-SW-002'
     },
     {
-        id: 'el-003',
-        name: 'Caricatore Wireless Magnetico 15W',
-        category: 'elettronica',
-        supplierPrice: 5.00,
-        price: 14.99,
-        originalPrice: 19.99,
-        image: 'https://images.unsplash.com/photo-1605464315542-bda3e2f4e605?w=400&h=400&fit=crop',
-        images: [],
-        description: 'Caricatore wireless magnetico compatibile con iPhone e Android. Ricarica rapida 15W, design ultrasottile, LED indicatore.',
-        rating: 4.6,
-        reviews: 312,
-        badge: '',
-        stock: 200,
-        sku: 'CJ-CHG-003'
-    },
-    {
         id: 'el-004',
         name: 'Mini Proiettore Portatile HD',
         category: 'elettronica',
@@ -283,22 +267,6 @@ const PRODUCTS_DB = [
         sku: 'CJ-GA-007'
     },
     {
-        id: 'ga-008',
-        name: 'Hub USB-C 7 in 1 Multiporta',
-        category: 'gadget',
-        supplierPrice: 11.00,
-        price: 28.99,
-        originalPrice: 39.99,
-        image: 'https://images.unsplash.com/photo-1625877988223-bd7710c9fa94?w=400&h=400&fit=crop',
-        images: [],
-        description: 'Hub USB-C 7 porte: HDMI 4K, 3x USB-A 3.0, SD/MicroSD, ricarica PD 100W. Alluminio premium, compatibile MacBook e laptop moderni. Plug & Play, nessun driver.',
-        rating: 4.4,
-        reviews: 167,
-        badge: 'Novità',
-        stock: 80,
-        sku: 'CJ-GA-008'
-    },
-    {
         id: 'ga-009',
         name: 'Mouse Wireless Silenzioso Ricaricabile',
         category: 'gadget',
@@ -364,38 +332,6 @@ const PRODUCTS_DB = [
         sku: 'CJ-FE-003'
     },
     {
-        id: 'fe-004',
-        name: 'Set 100 Punte Miste per Trapano',
-        category: 'ferramenta',
-        supplierPrice: 5.00,
-        price: 13.99,
-        originalPrice: 19.99,
-        image: 'https://images.unsplash.com/photo-1504611695716-7fd97aeee89e?w=400&h=400&fit=crop',
-        images: [],
-        description: 'Kit 100 punte assortite per legno, metallo, muratura e plastica. Diametri 1-10mm. Acciaio HSS ad alta velocità, rivestimento TiN per maggiore durata. Con cassetta portapunte.',
-        rating: 4.5,
-        reviews: 267,
-        badge: '',
-        stock: 200,
-        sku: 'CJ-FE-004'
-    },
-    {
-        id: 'fe-005',
-        name: 'Nastro Adesivo Americano Professionale 48mm',
-        category: 'ferramenta',
-        supplierPrice: 2.00,
-        price: 6.99,
-        originalPrice: 9.99,
-        image: 'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=400&h=400&fit=crop',
-        images: [],
-        description: 'Nastro americano extra-forte 48mm x 50m, resistente a umidità, strappi e temperature -10°+60°C. Ideale per imballaggi, riparazioni, tubature e cantiere.',
-        rating: 4.7,
-        reviews: 534,
-        badge: 'Bestseller',
-        stock: 500,
-        sku: 'CJ-FE-005'
-    },
-    {
         id: 'fe-006',
         name: 'Cutter Professionale 18mm con 10 Lame',
         category: 'ferramenta',
@@ -413,7 +349,7 @@ const PRODUCTS_DB = [
     }
 ];
 
-const PRODUCTS_VERSION = '6'; // incrementare per forzare reset localStorage
+const PRODUCTS_VERSION = '7'; // incrementare per forzare reset localStorage
 
 /**
  * Gestione prodotti
