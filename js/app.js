@@ -2,19 +2,24 @@ const TAG = 'prezzotop08-21';
 const STORE_KEY = 'dropshop_products_v1';
 
 function getProducts() {
-  try { return JSON.parse(localStorage.getItem(STORE_KEY) || '[]'); } catch { return []; }
+  // Unisce prodotti manuali (localStorage) con il catalogo automatico
+  const manual = JSON.parse(localStorage.getItem(STORE_KEY) || '[]');
+  const manualAsins = new Set(manual.map(p => p.asin));
+  const catalog = (typeof CATALOG !== 'undefined' ? CATALOG : []).filter(p => !manualAsins.has(p.asin));
+  return [...manual, ...catalog];
 }
-function saveProducts(arr) {
-  localStorage.setItem(STORE_KEY, JSON.stringify(arr));
-}
+
+function saveManual(arr) { localStorage.setItem(STORE_KEY, JSON.stringify(arr)); }
+function getManual() { return JSON.parse(localStorage.getItem(STORE_KEY) || '[]'); }
 
 let currentCat = 'tutti';
 
 function filterCat(cat) {
   currentCat = cat;
   document.querySelectorAll('.header-nav a').forEach(a => a.classList.remove('active'));
-  const links = document.querySelectorAll('.header-nav a');
-  links.forEach(a => { if (a.textContent.toLowerCase().includes(cat === 'tutti' ? 'tutti' : cat)) a.classList.add('active'); });
+  document.querySelectorAll('.header-nav a').forEach(a => {
+    if (a.dataset.cat === cat) a.classList.add('active');
+  });
   renderProducts();
 }
 
@@ -22,6 +27,7 @@ function renderProducts() {
   const grid = document.getElementById('productsGrid');
   const empty = document.getElementById('emptyMsg');
   if (!grid) return;
+
   const query = (document.getElementById('searchInput')?.value || '').toLowerCase();
   let products = getProducts();
   if (currentCat !== 'tutti') products = products.filter(p => p.cat === currentCat);
@@ -40,13 +46,14 @@ function renderProducts() {
     <div class="product-card">
       <div class="card-img">
         ${discount > 0 ? `<span class="badge">-${discount}%</span>` : ''}
-        <img src="${p.img || 'https://images.unsplash.com/photo-1606220588913-b3aacb4d2f46?w=400&h=400&fit=crop'}" alt="${p.title}" onerror="this.src='https://images.unsplash.com/photo-1606220588913-b3aacb4d2f46?w=400&h=400&fit=crop'">
+        <img src="${p.img || ''}" alt="${p.title}"
+          onerror="this.src='https://images.unsplash.com/photo-1606220588913-b3aacb4d2f46?w=400&h=400&fit=crop'">
       </div>
       <div class="card-body">
         <div class="card-title">${p.title}</div>
         <div class="card-prices">
-          <span class="price-current">€${p.price.toFixed(2)}</span>
-          ${p.origPrice ? `<span class="price-original">€${p.origPrice.toFixed(2)}</span>` : ''}
+          <span class="price-current">€${Number(p.price).toFixed(2)}</span>
+          ${p.origPrice ? `<span class="price-original">€${Number(p.origPrice).toFixed(2)}</span>` : ''}
         </div>
         <div class="card-footer">
           <a href="${p.url}" target="_blank" rel="nofollow sponsored" class="btn-amazon">
@@ -59,5 +66,8 @@ function renderProducts() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  if (document.getElementById('productsGrid')) renderProducts();
+  // attiva "Tutti" di default
+  const tuttiLink = document.querySelector('.header-nav a[data-cat="tutti"]');
+  if (tuttiLink) tuttiLink.classList.add('active');
+  renderProducts();
 });

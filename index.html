@@ -13,12 +13,12 @@
   <div class="header-inner">
     <div class="logo">🛒 DropShop Italia</div>
     <nav class="header-nav">
-      <a href="#" onclick="filterCat('tutti');return false">Tutti</a>
-      <a href="#" onclick="filterCat('elettronica');return false">Elettronica</a>
-      <a href="#" onclick="filterCat('casa');return false">Casa</a>
-      <a href="#" onclick="filterCat('moda');return false">Moda</a>
-      <a href="#" onclick="filterCat('gadget');return false">Gadget</a>
-      <a href="#" onclick="filterCat('sport');return false">Sport</a>
+      <a href="#" data-cat="tutti" onclick="filterCat('tutti');return false">Tutti</a>
+      <a href="#" data-cat="elettronica" onclick="filterCat('elettronica');return false">Elettronica</a>
+      <a href="#" data-cat="casa" onclick="filterCat('casa');return false">Casa</a>
+      <a href="#" data-cat="moda" onclick="filterCat('moda');return false">Moda</a>
+      <a href="#" data-cat="gadget" onclick="filterCat('gadget');return false">Gadget</a>
+      <a href="#" data-cat="sport" onclick="filterCat('sport');return false">Sport</a>
     </nav>
     <a href="https://t.me/dropshopofferte" target="_blank" class="tg-btn"><i class="fab fa-telegram"></i> Canale Offerte</a>
   </div>
@@ -46,6 +46,7 @@
   <p style="font-size:0.8rem;opacity:0.7">Guadagniamo una commissione sugli acquisti effettuati tramite i link di questo sito (Amazon Associates).</p>
 </footer>
 
+<script src="js/catalog.js?v=2"></script>
 <script src="js/app.js?v=2"></script>
 </body>
 </html>
