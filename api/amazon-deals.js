@@ -6,20 +6,17 @@
 const AFFILIATE_TAG = 'prezzotop08-21';
 const RSS2JSON = 'https://api.rss2json.com/v1/api.json';
 
-// Feed RSS che contengono prodotti Amazon IT reali
+// Solo feed RSS Amazon Italia
 const FEEDS = [
-    // Aggregatori italiani con link Amazon reali
-    { url: 'https://www.offertissime.net/feed/', cat: 'varie' },
-    { url: 'https://www.sconti.info/feed/', cat: 'varie' },
-    { url: 'https://amzn.to/feeds/bestsellers/electronics', cat: 'elettronica' }, // tentativo diretto
-    // Amazon RSS diretti (funzionano via proxy)
     { url: 'https://www.amazon.it/gp/rss/bestsellers/electronics/', cat: 'elettronica' },
     { url: 'https://www.amazon.it/gp/rss/movers-and-shakers/electronics/', cat: 'elettronica' },
     { url: 'https://www.amazon.it/gp/rss/bestsellers/kitchen/', cat: 'casa' },
     { url: 'https://www.amazon.it/gp/rss/bestsellers/fashion/', cat: 'moda' },
     { url: 'https://www.amazon.it/gp/rss/bestsellers/toys/', cat: 'gadget' },
     { url: 'https://www.amazon.it/gp/rss/bestsellers/sporting-goods/', cat: 'sport' },
-    { url: 'https://www.amazon.it/gp/rss/bestsellers/beauty/', cat: 'elettronica' },
+    { url: 'https://www.amazon.it/gp/rss/bestsellers/beauty/', cat: 'moda' },
+    { url: 'https://www.amazon.it/gp/rss/bestsellers/computers/', cat: 'elettronica' },
+    { url: 'https://www.amazon.it/gp/rss/bestsellers/garden/', cat: 'casa' },
 ];
 
 const FALLBACK_IMAGES = {
