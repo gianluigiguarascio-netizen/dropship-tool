@@ -660,14 +660,21 @@ const DealFinder = {
 
     generateNewDeals(count) {
         const templates = [
-            { title: 'Mouse Gaming Wireless 16000 DPI RGB', cat: 'electronics', orig: 49.99 },
-            { title: 'Telecamera WiFi 2K Visione Notturna 360°', cat: 'electronics', orig: 39.99 },
-            { title: 'Set Valigie 3 Pezzi Rigide TSA', cat: 'fashion', orig: 159.99 },
-            { title: 'Bilancia Pesapersone Smart WiFi Body Comp', cat: 'home', orig: 34.99 },
-            { title: 'Cavo USB-C 100W Pack x5 Intrecciato', cat: 'electronics', orig: 24.99 },
-            { title: 'Felpa Uomo Tech Fleece Zip Sportiva', cat: 'fashion', orig: 44.99 },
-            { title: 'Luce Notturna Smart Sensore Movimento Pack x3', cat: 'home', orig: 19.99 },
-            { title: 'Gamepad Retro Wireless 2.4G - 10000 Giochi', cat: 'electronics', orig: 34.99 },
+            { title: 'Mouse Gaming Wireless 16000 DPI RGB', cat: 'electronics', orig: 49.99, img: 'https://images.unsplash.com/photo-1527814050087-3793815479db?w=300&h=300&fit=crop' },
+            { title: 'Telecamera WiFi 2K Visione Notturna 360°', cat: 'electronics', orig: 39.99, img: 'https://images.unsplash.com/photo-1580745089362-8e2a1b0a1e4e?w=300&h=300&fit=crop' },
+            { title: 'Set Valigie 3 Pezzi Rigide TSA', cat: 'fashion', orig: 159.99, img: 'https://images.unsplash.com/photo-1565026057447-bc90a3dceb87?w=300&h=300&fit=crop' },
+            { title: 'Bilancia Pesapersone Smart WiFi Body Comp', cat: 'home', orig: 34.99, img: 'https://images.unsplash.com/photo-1534258936925-c58bed479fcb?w=300&h=300&fit=crop' },
+            { title: 'Cavo USB-C 100W Pack x5 Intrecciato', cat: 'electronics', orig: 24.99, img: 'https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=300&h=300&fit=crop' },
+            { title: 'Felpa Uomo Tech Fleece Zip Sportiva', cat: 'fashion', orig: 44.99, img: 'https://images.unsplash.com/photo-1556821840-3a63f15732ce?w=300&h=300&fit=crop' },
+            { title: 'Luce Notturna Smart Sensore Movimento Pack x3', cat: 'home', orig: 19.99, img: 'https://images.unsplash.com/photo-1565814329452-e1efa11c5b89?w=300&h=300&fit=crop' },
+            { title: 'Gamepad Wireless 2.4G Compatibile PC/PS', cat: 'electronics', orig: 34.99, img: 'https://images.unsplash.com/photo-1592840496694-26d035b52b48?w=300&h=300&fit=crop' },
+            { title: 'Aspirapolvere Robot WiFi Mappatura Laser', cat: 'home', orig: 189.99, img: 'https://images.unsplash.com/photo-1558317374-067fb5f30001?w=300&h=300&fit=crop' },
+            { title: 'Cuffie Over-Ear Bluetooth ANC 40h', cat: 'electronics', orig: 79.99, img: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300&h=300&fit=crop' },
+            { title: 'Zaino Viaggio 40L Impermeabile Laptop 17"', cat: 'fashion', orig: 69.99, img: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=300&h=300&fit=crop' },
+            { title: 'Friggitrice ad Aria 6L Touch Screen 1800W', cat: 'home', orig: 99.99, img: 'https://images.unsplash.com/photo-1648733966573-8c2a9d576800?w=300&h=300&fit=crop' },
+            { title: 'Tastiera Meccanica RGB TKL 80%', cat: 'electronics', orig: 69.99, img: 'https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?w=300&h=300&fit=crop' },
+            { title: 'Power Bank 26800mAh Ricarica Rapida 65W', cat: 'electronics', orig: 49.99, img: 'https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=300&h=300&fit=crop' },
+            { title: 'Altoparlante Bluetooth Waterproof 360° 30W', cat: 'electronics', orig: 59.99, img: 'https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=300&h=300&fit=crop' },
         ];
 
         const deals = [];
@@ -682,7 +689,7 @@ const DealFinder = {
                 source: ['amazon', 'amazon', 'amazon', 'ebay'][Math.floor(Math.random() * 4)],
                 asin: 'B0' + Math.random().toString(36).substring(2, 11).toUpperCase(),
                 title: t.title,
-                image: `https://picsum.photos/300/300?random=${Date.now() + i}`,
+                image: t.img,
                 originalPrice: t.orig,
                 currentPrice,
                 discount,

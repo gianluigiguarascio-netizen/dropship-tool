@@ -128,7 +128,18 @@ const RSSFeedManager = {
             const imgMatch = item.description.match(/<img[^>]+src=["']([^"']+)["']/i);
             if (imgMatch) image = imgMatch[1];
         }
-        if (!image) image = `https://picsum.photos/300/300?random=${Math.floor(Math.random()*1000)}`;
+        if (!image) {
+            const catImages = {
+                electronics: ['https://images.unsplash.com/photo-1606220588913-b3aacb4d2f46?w=300&h=300&fit=crop','https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?w=300&h=300&fit=crop','https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300&h=300&fit=crop'],
+                fashion: ['https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=300&h=300&fit=crop','https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=300&h=300&fit=crop','https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300&h=300&fit=crop'],
+                home: ['https://images.unsplash.com/photo-1565814329452-e1efa11c5b89?w=300&h=300&fit=crop','https://images.unsplash.com/photo-1602928321679-560bb453f190?w=300&h=300&fit=crop','https://images.unsplash.com/photo-1648733966573-8c2a9d576800?w=300&h=300&fit=crop'],
+                sport: ['https://images.unsplash.com/photo-1552902865-b72c031ac5ea?w=300&h=300&fit=crop','https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=300&h=300&fit=crop'],
+                beauty: ['https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=300&h=300&fit=crop'],
+                kids: ['https://images.unsplash.com/photo-1587654780291-39c9404d746b?w=300&h=300&fit=crop'],
+            };
+            const pool = catImages[feed.category] || catImages.electronics;
+            image = pool[Math.floor(Math.random() * pool.length)];
+        }
 
         // Stima prezzo se non trovato
         const estimatedPrice = price || (Math.random() * 40 + 5).toFixed(2) * 1;
