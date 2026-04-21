@@ -604,25 +604,28 @@ const DealFinder = {
     // ============================
     async scan() {
         showLoading(true);
-        updateLoadingText('Connessione ai feed...');
+        updateLoadingText('Ricerca offerte Amazon in corso...');
 
         try {
-            const newDeals = await RSSFeedManager.fetchAll((feedName, i, total) => {
-                updateLoadingText(`Feed ${i}/${total}: ${feedName}`);
-            });
+            const res = await fetch('/api/amazon-deals');
+            const data = await res.json();
 
-            if (newDeals.length > 0) {
-                // Evita duplicati per URL
-                const existingUrls = new Set(this.deals.map(d => d.url));
-                const fresh = newDeals.filter(d => !existingUrls.has(d.url));
+            if (data.ok && data.deals && data.deals.length > 0) {
+                // normalizza formato per compatibilità con il resto del codice
+                const newDeals = data.deals.map(d => ({
+                    ...d,
+                    isError: d.discount >= 80,
+                    rating: d.rating || 4.0,
+                    reviews: d.reviews || 0,
+                }));
 
-                this.deals = [...fresh, ...this.deals].slice(0, 100);
+                const existingAsins = new Set(this.deals.map(d => d.asin).filter(Boolean));
+                const fresh = newDeals.filter(d => !existingAsins.has(d.asin));
+
+                this.deals = [...fresh, ...this.deals].slice(0, 200);
                 localStorage.setItem('dropshop_deals', JSON.stringify(this.deals));
 
-                // Notifica Telegram
-                await RSSFeedManager.notifyTelegram(fresh);
-
-                showToast(`${fresh.length} nuove offerte trovate dai feed!`, 'success');
+                showToast(`${fresh.length} offerte Amazon trovate!`, 'success');
 
                 // Auto-import
                 const autoImport = this.settings.autoImport || 'off';
@@ -633,24 +636,14 @@ const DealFinder = {
                         return true;
                     });
                     toImport.forEach(d => this.importDeal(d.id, true));
-                    if (toImport.length > 0) {
-                        showToast(`${toImport.length} offerte auto-importate nel negozio!`, 'success');
-                    }
+                    if (toImport.length > 0) showToast(`${toImport.length} offerte auto-importate!`, 'success');
                 }
             } else {
-                // Fallback a demo se i feed non rispondono
-                const demoDeals = this.generateNewDeals(5);
-                this.deals = [...demoDeals, ...this.deals].slice(0, 100);
-                localStorage.setItem('dropshop_deals', JSON.stringify(this.deals));
-
-                // Notifica Telegram anche con offerte demo
-                await RSSFeedManager.notifyTelegram(demoDeals);
-
-                showToast(`${demoDeals.length} offerte trovate!`, 'success');
+                showToast('Nessuna offerta trovata dai feed Amazon', 'error');
             }
         } catch (err) {
             console.error('[Scan]', err);
-            showToast('Errore durante la scansione', 'error');
+            showToast('Errore connessione API Amazon', 'error');
         }
 
         showLoading(false);
