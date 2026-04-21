@@ -475,10 +475,90 @@ const PRODUCTS_DB = [
         badge: '',
         stock: 90,
         sku: 'CJ-DO-008'
+    },
+    {
+        id: 'do-010',
+        name: 'Jeans Donna Skinny Push-Up',
+        category: 'donna',
+        supplierPrice: 12.00,
+        price: 32.99,
+        originalPrice: 49.99,
+        image: 'https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=400&h=400&fit=crop',
+        images: [],
+        description: 'Jeans skinny a vita alta con effetto push-up, denim elasticizzato comfort. Modellano la silhouette e restano comodi tutto il giorno. Taglie 36-46.',
+        rating: 4.6,
+        reviews: 538,
+        badge: 'Bestseller',
+        stock: 120,
+        sku: 'CJ-DO-010'
+    },
+    {
+        id: 'do-011',
+        name: 'Sneakers Donna Bianche Platform',
+        category: 'donna',
+        supplierPrice: 14.00,
+        price: 38.99,
+        originalPrice: 54.99,
+        image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&h=400&fit=crop',
+        images: [],
+        description: 'Sneakers con suola platform rialzata 4cm, tomaia in ecopelle bianca, soletta memory foam. Comode e alla moda, perfette per uso quotidiano. Numeri 36-41.',
+        rating: 4.7,
+        reviews: 612,
+        badge: '-29%',
+        stock: 90,
+        sku: 'CJ-DO-011'
+    },
+    {
+        id: 'do-012',
+        name: 'Vestito da Sera Donna Elegante',
+        category: 'donna',
+        supplierPrice: 16.00,
+        price: 44.99,
+        originalPrice: 64.99,
+        image: 'https://images.unsplash.com/photo-1496747611176-843222e1e57c?w=400&h=400&fit=crop',
+        images: [],
+        description: 'Abito da sera lungo con spacco laterale, scollo drappeggiato, tessuto satinato lucido. Ideale per cerimonie, cene eleganti e feste. Taglie S-XL.',
+        rating: 4.5,
+        reviews: 287,
+        badge: 'Novità',
+        stock: 50,
+        sku: 'CJ-DO-012'
+    },
+    {
+        id: 'do-014',
+        name: 'Cappotto Donna Lungo Classico',
+        category: 'donna',
+        supplierPrice: 22.00,
+        price: 59.99,
+        originalPrice: 89.99,
+        image: 'https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=400&h=400&fit=crop',
+        images: [],
+        description: 'Cappotto lungo al ginocchio, taglio sartoriale classico, tessuto misto lana caldo. Chiusura doppio petto con bottoni dorati. Colori: cammello, nero, grigio. Taglie S-XL.',
+        rating: 4.6,
+        reviews: 198,
+        badge: '-33%',
+        stock: 40,
+        sku: 'CJ-DO-014'
+    },
+    {
+        id: 'do-015',
+        name: 'Sciarpa Donna Cashmere Morbida',
+        category: 'donna',
+        supplierPrice: 6.00,
+        price: 17.99,
+        originalPrice: 24.99,
+        image: 'https://images.unsplash.com/photo-1520903920243-00d872a2d1c9?w=400&h=400&fit=crop',
+        images: [],
+        description: 'Sciarpa in misto cashmere ultra-morbida, 180x70cm, bordi sfrangiati. Calda e leggera, si abbina a qualsiasi outfit invernale. Disponibile in 8 colori.',
+        rating: 4.7,
+        reviews: 445,
+        badge: '',
+        stock: 200,
+        sku: 'CJ-DO-015'
     }
 ];
 
-const PRODUCTS_VERSION = '10'; // incrementare per forzare reset localStorage
+const PRODUCTS_VERSION = '12'; // incrementare per forzare reset localStorage
 
 /**
  * Gestione prodotti
