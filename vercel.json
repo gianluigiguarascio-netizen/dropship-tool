@@ -7,18 +7,6 @@
     {
       "path": "/api/agent-ordini",
       "schedule": "*/5 * * * *"
-    },
-    {
-      "path": "/api/agent-report",
-      "schedule": "0 8 * * *"
-    },
-    {
-      "path": "/api/agent-prezzi",
-      "schedule": "0 9 * * *"
-    },
-    {
-      "path": "/api/agent-social",
-      "schedule": "0 */3 * * *"
     }
   ]
 }
