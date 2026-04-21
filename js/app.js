@@ -9,7 +9,7 @@
     let currentSort = 'default';
     let currentSearch = '';
 
-    document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', async () => {
         ProductManager.init();
         if (window.ReviewManager) ReviewManager.init();
         Cart.init();
@@ -31,7 +31,44 @@
             I18N.init();
             I18N.apply();
         }
+
+        // Carica prodotti automatici da Firebase (trovati dall'agente)
+        loadAutoProducts();
     });
+
+    async function loadAutoProducts() {
+        try {
+            const apiKey = 'AIzaSyDNqLkTmqkv68OZmRKJ5sMHaXM_NvH4Ozc';
+            const projectId = 'dropshop-italia';
+            const url = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/auto_products?key=${apiKey}&pageSize=50`;
+            const res = await fetch(url);
+            const data = await res.json();
+            if (!data.documents) return;
+
+            const autoProducts = data.documents.map(doc => {
+                const f = doc.fields || {};
+                return {
+                    id: f.id?.stringValue || doc.name.split('/').pop(),
+                    name: f.name?.stringValue || '',
+                    category: f.category?.stringValue || 'elettronica',
+                    price: parseFloat(f.price?.doubleValue || f.price?.integerValue || 0),
+                    originalPrice: parseFloat(f.originalPrice?.doubleValue || f.originalPrice?.integerValue || 0),
+                    image: f.image?.stringValue || '',
+                    description: f.description?.stringValue || '',
+                    rating: parseFloat(f.rating?.doubleValue || 4),
+                    reviews: parseInt(f.reviews?.integerValue || 0),
+                    stock: parseInt(f.stock?.integerValue || 10),
+                    badge: f.badge?.stringValue || '',
+                    supplierPrice: parseFloat(f.supplierPrice?.doubleValue || 0),
+                };
+            }).filter(p => p.name && p.price > 0);
+
+            if (autoProducts.length > 0) {
+                ProductManager.mergeAutoProducts(autoProducts);
+                renderProducts();
+            }
+        } catch { /* silenzioso */ }
+    }
 
     function renderProducts() {
         let products = currentSearch

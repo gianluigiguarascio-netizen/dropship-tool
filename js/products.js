@@ -636,5 +636,11 @@ const ProductManager = {
 
     getProfitMargin(product) {
         return ((product.price - product.supplierPrice) / product.price * 100).toFixed(1);
+    },
+
+    mergeAutoProducts(autoProducts) {
+        const existingIds = new Set(this.products.map(p => p.id));
+        const newOnes = autoProducts.filter(p => !existingIds.has(p.id));
+        this.products = [...this.products, ...newOnes];
     }
 };
