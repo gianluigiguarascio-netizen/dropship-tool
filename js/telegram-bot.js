@@ -27,6 +27,10 @@ const TelegramBot = {
     async publishToChannel(deal) {
         if (!this.token || !this.channelId) return false;
 
+        const affiliateUrl = deal.url && deal.url.includes('amazon.it')
+            ? deal.url + (deal.url.includes('?') ? '&' : '?') + 'tag=prezzotop08-21'
+            : deal.url;
+
         const text = `🔥 <b>OFFERTA DEL GIORNO!</b>
 
 <b>${deal.title}</b>
@@ -36,7 +40,7 @@ const TelegramBot = {
 📉 Sconto: <b>-${deal.discount}%</b>
 ⭐ ${deal.rating}/5
 
-🛒 <a href="https://dropship-tool-ecru.vercel.app">Acquista su DropShop Italia →</a>
+🛒 <a href="${affiliateUrl}">Vedi su Amazon →</a>
 
 📢 @dropshopofferte`;
 
