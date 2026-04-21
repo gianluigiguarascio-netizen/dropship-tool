@@ -146,7 +146,7 @@ const TelegramBot = {
 
 💸 Profitto stimato: <b>+€ ${((deal.currentPrice * 1.6) - deal.currentPrice).toFixed(2)}</b>
 
-🔗 <a href="${deal.url}">COMPRA ORA →</a>
+🔗 <a href="${deal.url && deal.url.includes('amazon.it') ? deal.url.split('?')[0] + '?tag=prezzotop08-21' : deal.url}">COMPRA ORA →</a>
 
 ⚡ <i>Sbrigati! Gli errori di prezzo durano poco!</i>`;
 
@@ -168,7 +168,7 @@ const TelegramBot = {
 📉 Sconto: <b>-${deal.discount}%</b>
 ⭐ ${deal.rating}/5 • ${deal.source.toUpperCase()}
 
-🔗 <a href="${deal.url}">Vedi Offerta →</a>`;
+🔗 <a href="${deal.url && deal.url.includes('amazon.it') ? deal.url.split('?')[0] + '?tag=prezzotop08-21' : deal.url}">Vedi Offerta →</a>`;
 
         return await this.sendMessage(text);
     },

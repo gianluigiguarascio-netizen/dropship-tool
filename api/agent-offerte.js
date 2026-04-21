@@ -156,6 +156,9 @@ export default async function handler(req, res) {
     // 4. Posta i 10 migliori su Telegram
     const top10 = best.slice(0, 10);
     for (const p of top10) {
+        const productUrl = p.url && p.url.includes('amazon.it')
+            ? p.url.split('?')[0] + '?tag=prezzotop08-21'
+            : p.url || SHOP_URL;
         const text = `🔥 <b>OFFERTA TROVATA!</b>
 
 <b>${p.name}</b>
@@ -164,7 +167,7 @@ export default async function handler(req, res) {
 ❌ <s>€${p.originalPrice.toFixed(2)}</s>
 📉 Sconto: <b>-${p.discount}%</b>
 
-🔥 <a href="${SHOP_URL}?cat=${p.category}">Vedi offerta su PrezzoTop →</a>
+🛒 <a href="${productUrl}">Vedi su Amazon →</a>
 
 📢 @dropshopofferte`;
         await sendTelegram(CHANNEL_ID, text, p.image);
