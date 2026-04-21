@@ -4,30 +4,48 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Admin — DropShop Italia</title>
-<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/style.css?v=3">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
+
 <div class="admin-header">
   <h1>🛠 Admin — DropShop Italia</h1>
-  <a href="index.html"><i class="fas fa-store"></i> Vai al negozio</a>
+  <a href="index.html"><i class="fas fa-store"></i> Negozio</a>
 </div>
+
 <div class="admin-main">
 
-  <!-- AGGIUNGI -->
+  <!-- TELEGRAM -->
   <div class="box">
-    <h2><i class="fab fa-amazon" style="color:#ff9900"></i> Aggiungi prodotto da Amazon</h2>
-    <div class="fg">
-      <label>URL Amazon *<input id="iUrl" placeholder="https://www.amazon.it/dp/B0..."></label>
-      <label>Nome prodotto *<input id="iTitle" placeholder="Nome del prodotto"></label>
-      <label>Prezzo €<input id="iPrice" type="number" step=".01" placeholder="19.99"></label>
-      <label>Prezzo orig. €<input id="iOrig" type="number" step=".01" placeholder="29.99"></label>
-      <label>&nbsp;<button class="btn btn-primary" onclick="add()"><i class="fas fa-plus"></i> Aggiungi</button></label>
+    <h2><i class="fab fa-telegram" style="color:#0088cc"></i> Canale Telegram</h2>
+    <div class="tg-row">
+      <input id="tToken" placeholder="Bot Token (già configurato di default)">
+      <input id="tChan" placeholder="@dropshopofferte">
+      <button class="btn btn-tg btn-sm" onclick="saveTg()"><i class="fas fa-save"></i> Salva</button>
+      <button class="btn btn-sm" style="background:#eee;color:#333" onclick="testTg()"><i class="fas fa-paper-plane"></i> Test</button>
     </div>
-    <div class="img-row">
-      <span style="font-size:.82rem;color:#666;white-space:nowrap">Immagine URL:</span>
-      <input id="iImg" placeholder="https://m.media-amazon.com/images/...">
-      <select id="iCat" style="padding:9px 12px;border:2px solid #e0e0e0;border-radius:8px;font-size:.9rem">
+  </div>
+
+  <!-- AGGIUNGI PRODOTTO -->
+  <div class="box">
+    <h2><i class="fab fa-amazon" style="color:#ff9900"></i> Aggiungi prodotto Amazon</h2>
+    <div style="display:grid;grid-template-columns:2fr 1.5fr .8fr .8fr auto;gap:10px;align-items:end;flex-wrap:wrap">
+      <div><label style="font-size:.78rem;font-weight:600;color:#666;text-transform:uppercase;display:block;margin-bottom:4px">URL Amazon *</label>
+        <input id="iUrl" placeholder="https://www.amazon.it/dp/B0..." style="width:100%;padding:9px 12px;border:2px solid #ddd;border-radius:8px;font-size:.9rem;outline:none"></div>
+      <div><label style="font-size:.78rem;font-weight:600;color:#666;text-transform:uppercase;display:block;margin-bottom:4px">Nome *</label>
+        <input id="iTitle" placeholder="Nome prodotto" style="width:100%;padding:9px 12px;border:2px solid #ddd;border-radius:8px;font-size:.9rem;outline:none"></div>
+      <div><label style="font-size:.78rem;font-weight:600;color:#666;text-transform:uppercase;display:block;margin-bottom:4px">Prezzo €</label>
+        <input id="iPrice" type="number" step=".01" placeholder="19.99" style="width:100%;padding:9px 12px;border:2px solid #ddd;border-radius:8px;font-size:.9rem;outline:none"></div>
+      <div><label style="font-size:.78rem;font-weight:600;color:#666;text-transform:uppercase;display:block;margin-bottom:4px">Orig. €</label>
+        <input id="iOrig" type="number" step=".01" placeholder="29.99" style="width:100%;padding:9px 12px;border:2px solid #ddd;border-radius:8px;font-size:.9rem;outline:none"></div>
+      <div><label style="display:block;margin-bottom:4px">&nbsp;</label>
+        <button class="btn btn-primary" onclick="addProduct()"><i class="fas fa-plus"></i> Aggiungi</button></div>
+    </div>
+    <div style="margin-top:10px;display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+      <span style="font-size:.82rem;color:#666;white-space:nowrap">Immagine:</span>
+      <input id="iImg" placeholder="URL immagine (opzionale)" style="flex:1;min-width:200px;padding:8px 12px;border:2px solid #ddd;border-radius:8px;font-size:.88rem;outline:none">
+      <select id="iCat" style="padding:9px 12px;border:2px solid #ddd;border-radius:8px;font-size:.9rem;outline:none">
         <option value="elettronica">Elettronica</option>
         <option value="casa">Casa</option>
         <option value="moda">Moda</option>
@@ -37,127 +55,151 @@
     </div>
   </div>
 
-  <!-- TELEGRAM -->
+  <!-- TUTTI I PRODOTTI -->
   <div class="box">
-    <h2><i class="fab fa-telegram" style="color:#0088cc"></i> Telegram</h2>
-    <div class="tg-row">
-      <input id="tToken" placeholder="Bot Token">
-      <input id="tChan" placeholder="@dropshopofferte">
-      <button class="btn btn-tg btn-sm" onclick="saveTg()"><i class="fas fa-save"></i> Salva</button>
-      <button class="btn btn-sm" style="background:#eee" onclick="testTg()"><i class="fas fa-paper-plane"></i> Test</button>
+    <h2><i class="fab fa-amazon" style="color:#ff9900"></i> Tutti i prodotti (<span id="cnt">0</span>) — clicca <b style="color:#0088cc">Pubblica</b> per inviare su Telegram</h2>
+    <div style="overflow-x:auto">
+      <table>
+        <thead><tr><th>Img</th><th>Nome</th><th>Prezzo</th><th>Sconto</th><th>Azioni</th></tr></thead>
+        <tbody id="tbl"></tbody>
+      </table>
     </div>
   </div>
 
-  <!-- LISTA -->
-  <div class="box">
-    <h2><i class="fas fa-list"></i> Prodotti aggiunti manualmente (<span id="cnt">0</span>)</h2>
-    <div style="overflow-x:auto"><table><thead><tr><th>Img</th><th>Nome</th><th>Prezzo</th><th>Sconto</th><th>ASIN</th><th>Azioni</th></tr></thead>
-    <tbody id="tbl"></tbody></table></div>
-    <p id="noItems" style="text-align:center;padding:24px;color:#aaa;display:none">Nessun prodotto aggiunto manualmente.<br>Il catalogo automatico è visibile sul negozio.</p>
-  </div>
 </div>
 
 <div class="toast" id="toast"></div>
-<script src="js/catalog.js"></script>
+
+<script src="js/catalog.js?v=3"></script>
 <script>
-const KEY='ds_manual_v1', TGK='ds_tg_v1';
-const DEF_TOKEN='8548180810:AAEs1LTBMOXXiibvgQXfhUZoqtf8rm9qKpg';
-const DEF_CHAN='@dropshopofferte';
-const TAG='prezzotop08-21';
+const KEY = 'ds_manual_v1';
+const TGK = 'ds_tg_v1';
+const TAG = 'prezzotop08-21';
+const DEF_TOKEN = '8548180810:AAEs1LTBMOXXiibvgQXfhUZoqtf8rm9qKpg';
+const DEF_CHAN = '@dropshopofferte';
 
-function load(){return JSON.parse(localStorage.getItem(KEY)||'[]')}
-function save(a){localStorage.setItem(KEY,JSON.stringify(a))}
-function getTg(){const s=JSON.parse(localStorage.getItem(TGK)||'{}');return{token:s.token||DEF_TOKEN,chan:s.chan||DEF_CHAN}}
-function toast(m,t=''){const el=document.getElementById('toast');el.textContent=m;el.className='toast show '+(t==='ok'?'ok':t==='err'?'err':'');setTimeout(()=>el.className='toast',3200)}
+function loadManual() { try { return JSON.parse(localStorage.getItem(KEY) || '[]'); } catch { return []; } }
+function saveManual(a) { localStorage.setItem(KEY, JSON.stringify(a)); }
+function getTg() { const s = JSON.parse(localStorage.getItem(TGK) || '{}'); return { token: s.token || DEF_TOKEN, chan: s.chan || DEF_CHAN }; }
 
-function asin(url){const m=url.match(/\/dp\/([A-Z0-9]{10})/i)||url.match(/\/gp\/product\/([A-Z0-9]{10})/i);return m?m[1].toUpperCase():null}
-
-function add(){
-  const url=document.getElementById('iUrl').value.trim();
-  const title=document.getElementById('iTitle').value.trim();
-  const price=parseFloat(document.getElementById('iPrice').value);
-  const orig=parseFloat(document.getElementById('iOrig').value)||0;
-  const img=document.getElementById('iImg').value.trim();
-  const cat=document.getElementById('iCat').value;
-  if(!url){toast('Inserisci URL Amazon','err');return}
-  const id=asin(url);
-  if(!id){toast('URL non valido — deve contenere /dp/ASIN','err');return}
-  if(!title){toast('Inserisci il nome','err');return}
-  if(!price||price<=0){toast('Inserisci prezzo','err');return}
-  const items=load();
-  if(items.find(p=>p.asin===id)){toast('Prodotto già presente','err');return}
-  items.unshift({asin:id,title,price,orig,img,cat,url:`https://www.amazon.it/dp/${id}?tag=${TAG}`,addedAt:new Date().toISOString()});
-  save(items);render();toast('✅ Aggiunto!','ok');
-  ['iUrl','iTitle','iPrice','iOrig','iImg'].forEach(x=>document.getElementById(x).value='');
+function toast(m, t) {
+  const el = document.getElementById('toast');
+  el.textContent = m;
+  el.className = 'toast show' + (t === 'ok' ? ' ok' : t === 'err' ? ' err' : '');
+  setTimeout(() => el.className = 'toast', 3500);
 }
 
-function del(id){if(!confirm('Eliminare?'))return;save(load().filter(p=>p.asin!==id));render();toast('Eliminato')}
+function getAsin(url) {
+  const m = url.match(/\/dp\/([A-Z0-9]{10})/i) || url.match(/\/gp\/product\/([A-Z0-9]{10})/i);
+  return m ? m[1].toUpperCase() : null;
+}
 
-async function pub(id){
-  const p=load().find(x=>x.asin===id)||CATALOG.find(x=>x.asin===id);
-  if(!p)return;
-  const {token,chan}=getTg();
-  const disc=p.orig&&p.price?Math.round((1-p.price/p.orig)*100):0;
-  const txt=`🔥 <b>OFFERTA AMAZON!</b>\n\n<b>${p.title}</b>\n\n💰 Solo <b>€${p.price.toFixed(2)}</b>${p.orig?`\n❌ <s>€${p.orig.toFixed(2)}</s>`:''}${disc>0?`\n📉 Sconto: <b>-${disc}%</b>`:''}\n\n🛒 <a href="${p.url}">Vedi su Amazon →</a>\n\n📢 @dropshopofferte`;
-  try{
-    let ok=false;
-    if(p.img){
-      const r=await fetch(`https://api.telegram.org/bot${token}/sendPhoto`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chat_id:chan,photo:p.img,caption:txt,parse_mode:'HTML'})});
-      ok=(await r.json()).ok;
+function allProducts() {
+  const manual = loadManual();
+  const manualAsins = new Set(manual.map(p => p.asin));
+  const catalog = CATALOG.filter(p => !manualAsins.has(p.asin)).map(p => ({ ...p, isManual: false }));
+  return [...manual.map(p => ({ ...p, isManual: true })), ...catalog];
+}
+
+function addProduct() {
+  const url = document.getElementById('iUrl').value.trim();
+  const title = document.getElementById('iTitle').value.trim();
+  const price = parseFloat(document.getElementById('iPrice').value);
+  const orig = parseFloat(document.getElementById('iOrig').value) || 0;
+  const img = document.getElementById('iImg').value.trim();
+  const cat = document.getElementById('iCat').value;
+
+  if (!url) { toast('Inserisci URL Amazon', 'err'); return; }
+  const asin = getAsin(url);
+  if (!asin) { toast('URL non valido — deve contenere /dp/CODICE', 'err'); return; }
+  if (!title) { toast('Inserisci il nome prodotto', 'err'); return; }
+  if (!price || price <= 0) { toast('Inserisci il prezzo', 'err'); return; }
+
+  const manual = loadManual();
+  if (manual.find(p => p.asin === asin)) { toast('Prodotto già presente', 'err'); return; }
+
+  manual.unshift({ asin, title, price, orig, img, cat, url: `https://www.amazon.it/dp/${asin}?tag=${TAG}`, isManual: true });
+  saveManual(manual);
+  render();
+  toast('✅ Prodotto aggiunto!', 'ok');
+  ['iUrl', 'iTitle', 'iPrice', 'iOrig', 'iImg'].forEach(id => document.getElementById(id).value = '');
+}
+
+function deleteProduct(asin) {
+  if (!confirm('Eliminare questo prodotto?')) return;
+  saveManual(loadManual().filter(p => p.asin !== asin));
+  render();
+  toast('Eliminato');
+}
+
+async function publish(asin) {
+  const p = allProducts().find(x => x.asin === asin);
+  if (!p) return;
+  const { token, chan } = getTg();
+  const disc = p.orig && p.price ? Math.round((1 - p.price / p.orig) * 100) : 0;
+  const text = `🔥 <b>OFFERTA AMAZON!</b>\n\n<b>${p.title}</b>\n\n💰 Solo <b>€${Number(p.price).toFixed(2)}</b>${p.orig ? `\n❌ <s>€${Number(p.orig).toFixed(2)}</s>` : ''}${disc > 0 ? `\n📉 Sconto: <b>-${disc}%</b>` : ''}\n\n🛒 <a href="${p.url}">Vedi su Amazon →</a>\n\n📢 @dropshopofferte`;
+
+  try {
+    let ok = false;
+    if (p.img && p.img.startsWith('http')) {
+      const r = await fetch(`https://api.telegram.org/bot${token}/sendPhoto`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chat_id: chan, photo: p.img, caption: text, parse_mode: 'HTML' })
+      });
+      ok = (await r.json()).ok;
     }
-    if(!ok){
-      const r=await fetch(`https://api.telegram.org/bot${token}/sendMessage`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chat_id:chan,text:txt,parse_mode:'HTML'})});
-      ok=(await r.json()).ok;
+    if (!ok) {
+      const r = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chat_id: chan, text, parse_mode: 'HTML' })
+      });
+      ok = (await r.json()).ok;
     }
-    toast(ok?'✅ Pubblicato su Telegram!':'❌ Errore Telegram',ok?'ok':'err');
-  }catch{toast('❌ Errore di rete','err')}
+    toast(ok ? '✅ Pubblicato su @dropshopofferte!' : '❌ Errore Telegram', ok ? 'ok' : 'err');
+  } catch { toast('❌ Errore di rete', 'err'); }
 }
 
-function saveTg(){
-  const t=document.getElementById('tToken').value.trim()||DEF_TOKEN;
-  const c=document.getElementById('tChan').value.trim()||DEF_CHAN;
-  localStorage.setItem(TGK,JSON.stringify({token:t,chan:c}));
-  toast('✅ Salvato','ok');
+function saveTg() {
+  const token = document.getElementById('tToken').value.trim() || DEF_TOKEN;
+  const chan = document.getElementById('tChan').value.trim() || DEF_CHAN;
+  localStorage.setItem(TGK, JSON.stringify({ token, chan }));
+  toast('✅ Impostazioni salvate', 'ok');
 }
 
-async function testTg(){
-  const {token,chan}=getTg();
-  try{
-    const r=await fetch(`https://api.telegram.org/bot${token}/sendMessage`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chat_id:chan,text:'✅ <b>DropShop Bot attivo!</b>\n\nBot connesso a '+chan,parse_mode:'HTML'})});
-    const d=await r.json();
-    toast(d.ok?'✅ Test inviato!':'❌ '+d.description,d.ok?'ok':'err');
-  }catch{toast('❌ Errore rete','err')}
+async function testTg() {
+  const { token, chan } = getTg();
+  try {
+    const r = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ chat_id: chan, text: `✅ <b>DropShop Bot attivo!</b>\n\nBot connesso correttamente a ${chan} 🚀`, parse_mode: 'HTML' })
+    });
+    const d = await r.json();
+    toast(d.ok ? '✅ Test inviato su Telegram!' : '❌ ' + (d.description || 'Errore'), d.ok ? 'ok' : 'err');
+  } catch { toast('❌ Errore di rete', 'err'); }
 }
 
-function render(){
-  const items=load();
-  document.getElementById('cnt').textContent=items.length;
-  document.getElementById('noItems').style.display=items.length?'none':'block';
-  document.getElementById('tbl').innerHTML=items.map(p=>{
-    const disc=p.orig&&p.price?Math.round((1-p.price/p.orig)*100):0;
-    return`<tr>
-      <td>${p.img?`<img src="${p.img}" onerror="this.style.display='none'">`:'—'}</td>
-      <td><strong>${p.title}</strong><br><small style="color:#aaa">${p.asin}</small></td>
-      <td><strong>€${p.price.toFixed(2)}</strong>${p.orig?`<br><small style="text-decoration:line-through;color:#bbb">€${p.orig.toFixed(2)}</small>`:''}</td>
-      <td>${disc>0?`<span style="background:#ffeaa7;color:#e17055;padding:2px 8px;border-radius:4px;font-size:.78rem;font-weight:700">-${disc}%</span>`:'—'}</td>
-      <td><small>${p.asin}</small></td>
-      <td><div class="actions">
-        <button class="btn btn-tg btn-sm" onclick="pub('${p.asin}')"><i class="fab fa-telegram"></i> Pubblica</button>
-        <a href="${p.url}" target="_blank" class="btn btn-sm" style="background:#ff9900;color:#fff"><i class="fab fa-amazon"></i></a>
-        <button class="btn btn-del" onclick="del('${p.asin}')"><i class="fas fa-trash"></i></button>
-      </div></td>
+function render() {
+  const products = allProducts();
+  document.getElementById('cnt').textContent = products.length;
+  document.getElementById('tbl').innerHTML = products.map(p => {
+    const disc = p.orig && p.price ? Math.round((1 - p.price / p.orig) * 100) : 0;
+    return `<tr>
+      <td>${p.img ? `<img src="${p.img}" onerror="this.style.display='none'" style="width:46px;height:46px;object-fit:contain;background:#f8f8f8;border-radius:6px">` : '—'}</td>
+      <td style="max-width:280px"><strong>${p.title}</strong><br><small style="color:#aaa">${p.asin}${p.isManual ? ' <span style="color:#6c5ce7">★ manuale</span>' : ''}</small></td>
+      <td style="white-space:nowrap"><strong>€${Number(p.price).toFixed(2)}</strong>${p.orig ? `<br><small style="text-decoration:line-through;color:#bbb">€${Number(p.orig).toFixed(2)}</small>` : ''}</td>
+      <td>${disc > 0 ? `<span style="background:#ffeaa7;color:#e17055;padding:2px 8px;border-radius:4px;font-size:.78rem;font-weight:700">-${disc}%</span>` : '—'}</td>
+      <td>
+        <div class="actions">
+          <button class="btn btn-tg btn-sm" onclick="publish('${p.asin}')"><i class="fab fa-telegram"></i> Pubblica</button>
+          <a href="${p.url}" target="_blank" class="btn btn-sm" style="background:#ff9900;color:#fff"><i class="fab fa-amazon"></i></a>
+          ${p.isManual ? `<button class="btn btn-del" onclick="deleteProduct('${p.asin}')"><i class="fas fa-trash"></i></button>` : ''}
+        </div>
+      </td>
     </tr>`;
   }).join('');
 }
 
-window.addEventListener('DOMContentLoaded',()=>{
-  render();
-  // Mostra i prodotti del catalogo con pulsante pubblica
-  const tbl=document.getElementById('tbl');
-  if(!load().length){
-    // mostra catalogo come sola lettura
-  }
-});
+window.addEventListener('DOMContentLoaded', render);
 </script>
 </body>
 </html>
