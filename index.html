@@ -1,123 +1,51 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PrezzoTop — Le Migliori Offerte del Web</title>
-    <meta name="description" content="Le migliori offerte e sconti dal web aggiornate ogni ora. Risparmia su elettronica, casa, moda, bambini e tanto altro.">
-    <link rel="stylesheet" href="css/style.css?v=1">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DropShop Italia — Offerte Amazon</title>
+<link rel="stylesheet" href="css/style.css?v=2">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
 
-<!-- HEADER -->
-<header class="header">
-    <div class="container header-inner">
-        <div class="logo">
-            <span class="logo-prezzo">Prezzo</span><span class="logo-top">Top</span>
-            <span class="logo-tag">🔥 Offerte Live</span>
-        </div>
-        <div class="header-right">
-            <div class="search-box">
-                <i class="fas fa-search"></i>
-                <input type="text" id="searchInput" placeholder="Cerca offerte...">
-            </div>
-            <a href="https://t.me/dropshopofferte" target="_blank" class="telegram-btn">
-                <i class="fab fa-telegram"></i> Canale Offerte
-            </a>
-        </div>
-    </div>
+<header>
+  <div class="header-inner">
+    <div class="logo">🛒 DropShop Italia</div>
+    <nav class="header-nav">
+      <a href="#" onclick="filterCat('tutti');return false">Tutti</a>
+      <a href="#" onclick="filterCat('elettronica');return false">Elettronica</a>
+      <a href="#" onclick="filterCat('casa');return false">Casa</a>
+      <a href="#" onclick="filterCat('moda');return false">Moda</a>
+      <a href="#" onclick="filterCat('gadget');return false">Gadget</a>
+      <a href="#" onclick="filterCat('sport');return false">Sport</a>
+    </nav>
+    <a href="https://t.me/dropshopofferte" target="_blank" class="tg-btn"><i class="fab fa-telegram"></i> Canale Offerte</a>
+  </div>
 </header>
 
-<!-- HERO -->
-<section class="hero">
-    <div class="container">
-        <h1>Le migliori offerte del web<br><span>aggiornate ogni ora</span></h1>
-        <p>Trova sconti reali su Amazon e i migliori shop italiani. Clicca e risparmia subito.</p>
-        <div class="hero-stats">
-            <div class="stat"><strong id="totalDeals">—</strong><span>Offerte live</span></div>
-            <div class="stat"><strong>Ogni ora</strong><span>Aggiornamento</span></div>
-            <div class="stat"><strong>-90%</strong><span>Sconto massimo</span></div>
-        </div>
-    </div>
-</section>
+<main>
+  <div class="hero">
+    <h1>Le migliori offerte Amazon</h1>
+    <p>Prodotti selezionati con i prezzi più bassi. Clicca e compra direttamente su Amazon.</p>
+  </div>
 
-<!-- FILTRI CATEGORIA -->
-<section class="filters-section">
-    <div class="container">
-        <div class="filters" id="categoryFilters">
-            <button class="filter-btn active" data-cat="tutti">🔥 Tutti</button>
-            <button class="filter-btn" data-cat="elettronica">📱 Elettronica</button>
-            <button class="filter-btn" data-cat="casa">🏠 Casa</button>
-            <button class="filter-btn" data-cat="moda">👔 Moda</button>
-            <button class="filter-btn" data-cat="bambini">🧸 Bambini</button>
-            <button class="filter-btn" data-cat="sport">💪 Sport</button>
-            <button class="filter-btn" data-cat="bellezza">💄 Bellezza</button>
-        </div>
-        <div class="sort-bar">
-            <select id="sortSelect">
-                <option value="discount">Sconto maggiore</option>
-                <option value="price-asc">Prezzo crescente</option>
-                <option value="price-desc">Prezzo decrescente</option>
-                <option value="newest">Più recenti</option>
-            </select>
-            <span id="dealsCount" class="deals-count">Caricamento...</span>
-        </div>
-    </div>
-</section>
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="🔍 Cerca prodotto..." oninput="renderProducts()">
+  </div>
 
-<!-- DEALS GRID -->
-<main class="container">
-    <div id="loadingSpinner" class="loading">
-        <div class="spinner"></div>
-        <p>Ricerca offerte in corso...</p>
-    </div>
-    <div id="dealsGrid" class="deals-grid"></div>
-    <div id="noResults" class="no-results" style="display:none;">
-        <i class="fas fa-search"></i>
-        <p>Nessuna offerta trovata.</p>
-    </div>
-    <button id="loadMore" class="load-more" style="display:none;">
-        <i class="fas fa-plus"></i> Carica altre offerte
-    </button>
+  <div id="productsGrid" class="products-grid"></div>
+  <div id="emptyMsg" class="empty-msg" style="display:none">
+    <i class="fab fa-amazon" style="font-size:3rem;color:#ff9900;margin-bottom:12px;display:block"></i>
+    <p>Nessun prodotto ancora.<br><a href="admin.html">Vai all'admin</a> per aggiungere offerte Amazon.</p>
+  </div>
 </main>
 
-<!-- FOOTER -->
-<footer class="footer">
-    <div class="container">
-        <div class="footer-grid">
-            <div>
-                <div class="logo" style="margin-bottom:10px;">
-                    <span class="logo-prezzo">Prezzo</span><span class="logo-top">Top</span>
-                </div>
-                <p>Aggregatore di offerte italiane. Prezzi e disponibilità possono variare.</p>
-            </div>
-            <div>
-                <h4>Categorie</h4>
-                <ul>
-                    <li><a href="#" onclick="filterCat('elettronica')">Elettronica</a></li>
-                    <li><a href="#" onclick="filterCat('casa')">Casa & Cucina</a></li>
-                    <li><a href="#" onclick="filterCat('moda')">Moda</a></li>
-                    <li><a href="#" onclick="filterCat('bambini')">Bambini</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4>Seguici</h4>
-                <a href="https://t.me/dropshopofferte" target="_blank" class="social-link">
-                    <i class="fab fa-telegram"></i> @dropshopofferte
-                </a>
-                <p style="margin-top:15px;font-size:0.8rem;opacity:0.6;">
-                    Sito affiliato Amazon Associates. Acquistando tramite i nostri link potremmo ricevere una commissione senza costi aggiuntivi per te.
-                </p>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>© 2025 PrezzoTop — Tutti i diritti riservati</p>
-        </div>
-    </div>
+<footer>
+  <p>DropShop Italia — Offerte Amazon selezionate</p>
+  <p style="font-size:0.8rem;opacity:0.7">Guadagniamo una commissione sugli acquisti effettuati tramite i link di questo sito (Amazon Associates).</p>
 </footer>
 
-<script src="js/app.js?v=1"></script>
+<script src="js/app.js?v=2"></script>
 </body>
 </html>
