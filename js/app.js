@@ -13,6 +13,16 @@
         ProductManager.init();
         if (window.ReviewManager) ReviewManager.init();
         Cart.init();
+
+        // Supporto ?cat=CATEGORIA da link Telegram
+        const urlCat = new URLSearchParams(window.location.search).get('cat');
+        if (urlCat && urlCat !== 'tutti') {
+            currentCategory = urlCat;
+            document.querySelector(`[data-category="${urlCat}"]`)?.classList.add('active');
+            document.querySelector('[data-category="tutti"]')?.classList.remove('active');
+            document.getElementById('prodotti')?.scrollIntoView({ behavior: 'smooth' });
+        }
+
         renderProducts();
         bindEvents();
         hideLoading();

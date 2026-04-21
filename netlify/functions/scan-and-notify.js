@@ -108,6 +108,14 @@ exports.handler = async () => {
 
     // Pubblica sul canale le 3 offerte
     for (const deal of deals) {
+        const catMap = {
+            elettronica: 'elettronica', gadget: 'gadget', casa: 'casa',
+            moda: 'moda', bambini: 'elettronica', sport: 'gadget',
+            bellezza: 'moda', cucina: 'casa'
+        };
+        const shopCat = catMap[deal.cat] || 'tutti';
+        const shopLink = `${SHOP_URL}?cat=${shopCat}`;
+
         const text = `🔥 <b>OFFERTA DEL GIORNO!</b>
 
 <b>${deal.title}</b>
@@ -116,7 +124,7 @@ exports.handler = async () => {
 ❌ <s>€ ${deal.orig.toFixed(2)}</s>
 📉 Sconto: <b>-${deal.discount}%</b>
 
-🛒 <a href="${SHOP_URL}">Acquista su DropShop Italia →</a>
+🛒 <a href="${shopLink}">Vedi prodotti ${deal.cat} →</a>
 
 📢 @dropshopofferte`;
 
