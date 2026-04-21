@@ -4,49 +4,38 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DropShop Italia — Offerte Amazon</title>
-<link rel="stylesheet" href="css/style.css?v=2">
+<link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
-
 <header>
   <div class="header-inner">
     <div class="logo">🛒 DropShop Italia</div>
-    <nav class="header-nav">
-      <a href="#" data-cat="tutti" onclick="filterCat('tutti');return false">Tutti</a>
-      <a href="#" data-cat="elettronica" onclick="filterCat('elettronica');return false">Elettronica</a>
-      <a href="#" data-cat="casa" onclick="filterCat('casa');return false">Casa</a>
-      <a href="#" data-cat="moda" onclick="filterCat('moda');return false">Moda</a>
-      <a href="#" data-cat="gadget" onclick="filterCat('gadget');return false">Gadget</a>
-      <a href="#" data-cat="sport" onclick="filterCat('sport');return false">Sport</a>
+    <nav id="nav">
+      <a href="#" data-cat="tutti" class="active" onclick="filter(this);return false">Tutti</a>
+      <a href="#" data-cat="elettronica" onclick="filter(this);return false">Elettronica</a>
+      <a href="#" data-cat="casa" onclick="filter(this);return false">Casa</a>
+      <a href="#" data-cat="moda" onclick="filter(this);return false">Moda</a>
+      <a href="#" data-cat="gadget" onclick="filter(this);return false">Gadget</a>
+      <a href="#" data-cat="sport" onclick="filter(this);return false">Sport</a>
     </nav>
-    <a href="https://t.me/dropshopofferte" target="_blank" class="tg-btn"><i class="fab fa-telegram"></i> Canale Offerte</a>
+    <a href="https://t.me/dropshopofferte" target="_blank" class="tg-btn"><i class="fab fa-telegram"></i> Canale</a>
   </div>
 </header>
-
 <main>
   <div class="hero">
     <h1>Le migliori offerte Amazon</h1>
-    <p>Prodotti selezionati con i prezzi più bassi. Clicca e compra direttamente su Amazon.</p>
+    <p>Clicca su un prodotto e acquista direttamente su Amazon.</p>
   </div>
-
-  <div class="search-bar">
-    <input type="text" id="searchInput" placeholder="🔍 Cerca prodotto..." oninput="renderProducts()">
+  <div class="search-wrap">
+    <input id="q" type="text" placeholder="🔍 Cerca prodotto..." oninput="render()">
   </div>
-
-  <div id="productsGrid" class="products-grid"></div>
-  <div id="emptyMsg" class="empty-msg" style="display:none">
-    <i class="fab fa-amazon" style="font-size:3rem;color:#ff9900;margin-bottom:12px;display:block"></i>
-    <p>Nessun prodotto ancora.<br><a href="admin.html">Vai all'admin</a> per aggiungere offerte Amazon.</p>
-  </div>
+  <div id="grid" class="grid"></div>
 </main>
-
 <footer>
-  <p>DropShop Italia — Offerte Amazon selezionate</p>
-  <p style="font-size:0.8rem;opacity:0.7">Guadagniamo una commissione sugli acquisti effettuati tramite i link di questo sito (Amazon Associates).</p>
+  <p>DropShop Italia — Link sponsorizzati Amazon Associates (tag: prezzotop08-21)</p>
 </footer>
-
-<script src="js/catalog.js?v=2"></script>
-<script src="js/app.js?v=2"></script>
+<script src="js/catalog.js"></script>
+<script src="js/app.js"></script>
 </body>
 </html>

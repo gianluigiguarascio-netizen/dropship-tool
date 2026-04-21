@@ -4,50 +4,30 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Admin — DropShop Italia</title>
-<link rel="stylesheet" href="css/style.css?v=2">
+<link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
-
 <div class="admin-header">
   <h1>🛠 Admin — DropShop Italia</h1>
   <a href="index.html"><i class="fas fa-store"></i> Vai al negozio</a>
 </div>
-
 <div class="admin-main">
 
-  <!-- AGGIUNGI PRODOTTO -->
-  <div class="card-box">
-    <h2><i class="fab fa-amazon" style="color:#ff9900"></i> Aggiungi prodotto Amazon</h2>
-    <div class="form-grid">
-      <div class="form-group">
-        <label>URL Amazon (obbligatorio)</label>
-        <input type="text" id="inUrl" placeholder="https://www.amazon.it/dp/B0XXXXXXX">
-      </div>
-      <div class="form-group">
-        <label>Nome prodotto</label>
-        <input type="text" id="inTitle" placeholder="Nome del prodotto">
-      </div>
-      <div class="form-group">
-        <label>Prezzo €</label>
-        <input type="number" id="inPrice" placeholder="19.99" step="0.01" min="0">
-      </div>
-      <div class="form-group">
-        <label>Prezzo originale €</label>
-        <input type="number" id="inOrig" placeholder="29.99" step="0.01" min="0">
-      </div>
-      <div class="form-group">
-        <label>&nbsp;</label>
-        <button class="btn btn-primary" onclick="addProduct()"><i class="fas fa-plus"></i> Aggiungi</button>
-      </div>
+  <!-- AGGIUNGI -->
+  <div class="box">
+    <h2><i class="fab fa-amazon" style="color:#ff9900"></i> Aggiungi prodotto da Amazon</h2>
+    <div class="fg">
+      <label>URL Amazon *<input id="iUrl" placeholder="https://www.amazon.it/dp/B0..."></label>
+      <label>Nome prodotto *<input id="iTitle" placeholder="Nome del prodotto"></label>
+      <label>Prezzo €<input id="iPrice" type="number" step=".01" placeholder="19.99"></label>
+      <label>Prezzo orig. €<input id="iOrig" type="number" step=".01" placeholder="29.99"></label>
+      <label>&nbsp;<button class="btn btn-primary" onclick="add()"><i class="fas fa-plus"></i> Aggiungi</button></label>
     </div>
-    <div style="margin-top:10px;font-size:0.82rem;color:#636e72">
-      <strong>URL immagine (opzionale):</strong>
-      <input type="text" id="inImg" placeholder="https://..." style="width:100%;margin-top:5px;padding:8px 12px;border:2px solid #e0e0e0;border-radius:8px;font-size:0.9rem;">
-    </div>
-    <div style="margin-top:10px;font-size:0.82rem;color:#636e72">
-      <strong>Categoria:</strong>
-      <select id="inCat" style="margin-left:8px;padding:7px 12px;border:2px solid #e0e0e0;border-radius:8px;font-size:0.9rem;">
+    <div class="img-row">
+      <span style="font-size:.82rem;color:#666;white-space:nowrap">Immagine URL:</span>
+      <input id="iImg" placeholder="https://m.media-amazon.com/images/...">
+      <select id="iCat" style="padding:9px 12px;border:2px solid #e0e0e0;border-radius:8px;font-size:.9rem">
         <option value="elettronica">Elettronica</option>
         <option value="casa">Casa</option>
         <option value="moda">Moda</option>
@@ -58,218 +38,125 @@
   </div>
 
   <!-- TELEGRAM -->
-  <div class="card-box">
-    <h2><i class="fab fa-telegram" style="color:#0088cc"></i> Impostazioni Telegram</h2>
+  <div class="box">
+    <h2><i class="fab fa-telegram" style="color:#0088cc"></i> Telegram</h2>
     <div class="tg-row">
-      <input type="text" id="tgToken" placeholder="Bot Token (già configurato)">
-      <input type="text" id="tgChannel" placeholder="@dropshopofferte">
-      <button class="btn btn-tg" onclick="saveTgSettings()"><i class="fas fa-save"></i> Salva</button>
-      <button class="btn" style="background:#eee;color:#333" onclick="testTelegram()"><i class="fas fa-paper-plane"></i> Test</button>
+      <input id="tToken" placeholder="Bot Token">
+      <input id="tChan" placeholder="@dropshopofferte">
+      <button class="btn btn-tg btn-sm" onclick="saveTg()"><i class="fas fa-save"></i> Salva</button>
+      <button class="btn btn-sm" style="background:#eee" onclick="testTg()"><i class="fas fa-paper-plane"></i> Test</button>
     </div>
   </div>
 
-  <!-- LISTA PRODOTTI -->
-  <div class="card-box">
-    <h2><i class="fas fa-list"></i> Prodotti nel negozio (<span id="countLabel">0</span>)</h2>
-    <div style="overflow-x:auto">
-      <table class="admin-table">
-        <thead>
-          <tr>
-            <th>Img</th>
-            <th>Nome</th>
-            <th>Prezzo</th>
-            <th>Sconto</th>
-            <th>Categoria</th>
-            <th>Azioni</th>
-          </tr>
-        </thead>
-        <tbody id="productsList"></tbody>
-      </table>
-    </div>
-    <div id="emptyAdmin" style="text-align:center;padding:30px;color:#aaa;display:none">Nessun prodotto. Aggiungine uno sopra.</div>
+  <!-- LISTA -->
+  <div class="box">
+    <h2><i class="fas fa-list"></i> Prodotti aggiunti manualmente (<span id="cnt">0</span>)</h2>
+    <div style="overflow-x:auto"><table><thead><tr><th>Img</th><th>Nome</th><th>Prezzo</th><th>Sconto</th><th>ASIN</th><th>Azioni</th></tr></thead>
+    <tbody id="tbl"></tbody></table></div>
+    <p id="noItems" style="text-align:center;padding:24px;color:#aaa;display:none">Nessun prodotto aggiunto manualmente.<br>Il catalogo automatico è visibile sul negozio.</p>
   </div>
-
 </div>
 
 <div class="toast" id="toast"></div>
-
+<script src="js/catalog.js"></script>
 <script>
-const TAG = 'prezzotop08-21';
-const STORE_KEY = 'dropshop_products_v1';
-const TG_KEY = 'dropshop_tg_settings';
+const KEY='ds_manual_v1', TGK='ds_tg_v1';
+const DEF_TOKEN='8548180810:AAEs1LTBMOXXiibvgQXfhUZoqtf8rm9qKpg';
+const DEF_CHAN='@dropshopofferte';
+const TAG='prezzotop08-21';
 
-const DEFAULT_TOKEN = '8548180810:AAEs1LTBMOXXiibvgQXfhUZoqtf8rm9qKpg';
-const DEFAULT_CHANNEL = '@dropshopofferte';
+function load(){return JSON.parse(localStorage.getItem(KEY)||'[]')}
+function save(a){localStorage.setItem(KEY,JSON.stringify(a))}
+function getTg(){const s=JSON.parse(localStorage.getItem(TGK)||'{}');return{token:s.token||DEF_TOKEN,chan:s.chan||DEF_CHAN}}
+function toast(m,t=''){const el=document.getElementById('toast');el.textContent=m;el.className='toast show '+(t==='ok'?'ok':t==='err'?'err':'');setTimeout(()=>el.className='toast',3200)}
 
-function getProducts() { try { return JSON.parse(localStorage.getItem(STORE_KEY) || '[]'); } catch { return []; } }
-function saveProducts(arr) { localStorage.setItem(STORE_KEY, JSON.stringify(arr)); }
-function getTgSettings() {
-  const s = JSON.parse(localStorage.getItem(TG_KEY) || '{}');
-  return { token: s.token || DEFAULT_TOKEN, channel: s.channel || DEFAULT_CHANNEL };
+function asin(url){const m=url.match(/\/dp\/([A-Z0-9]{10})/i)||url.match(/\/gp\/product\/([A-Z0-9]{10})/i);return m?m[1].toUpperCase():null}
+
+function add(){
+  const url=document.getElementById('iUrl').value.trim();
+  const title=document.getElementById('iTitle').value.trim();
+  const price=parseFloat(document.getElementById('iPrice').value);
+  const orig=parseFloat(document.getElementById('iOrig').value)||0;
+  const img=document.getElementById('iImg').value.trim();
+  const cat=document.getElementById('iCat').value;
+  if(!url){toast('Inserisci URL Amazon','err');return}
+  const id=asin(url);
+  if(!id){toast('URL non valido — deve contenere /dp/ASIN','err');return}
+  if(!title){toast('Inserisci il nome','err');return}
+  if(!price||price<=0){toast('Inserisci prezzo','err');return}
+  const items=load();
+  if(items.find(p=>p.asin===id)){toast('Prodotto già presente','err');return}
+  items.unshift({asin:id,title,price,orig,img,cat,url:`https://www.amazon.it/dp/${id}?tag=${TAG}`,addedAt:new Date().toISOString()});
+  save(items);render();toast('✅ Aggiunto!','ok');
+  ['iUrl','iTitle','iPrice','iOrig','iImg'].forEach(x=>document.getElementById(x).value='');
 }
 
-function toast(msg, type = '') {
-  const t = document.getElementById('toast');
-  t.textContent = msg; t.className = 'toast show ' + type;
-  setTimeout(() => { t.className = 'toast'; }, 3500);
-}
+function del(id){if(!confirm('Eliminare?'))return;save(load().filter(p=>p.asin!==id));render();toast('Eliminato')}
 
-function extractAsin(url) {
-  const m = url.match(/\/dp\/([A-Z0-9]{10})/i) || url.match(/\/gp\/product\/([A-Z0-9]{10})/i);
-  return m ? m[1].toUpperCase() : null;
-}
-
-function buildAffiliateUrl(asin) {
-  return `https://www.amazon.it/dp/${asin}?tag=${TAG}`;
-}
-
-function addProduct() {
-  const rawUrl = document.getElementById('inUrl').value.trim();
-  const title = document.getElementById('inTitle').value.trim();
-  const price = parseFloat(document.getElementById('inPrice').value);
-  const origPrice = parseFloat(document.getElementById('inOrig').value) || 0;
-  const img = document.getElementById('inImg').value.trim();
-  const cat = document.getElementById('inCat').value;
-
-  if (!rawUrl) { toast('Inserisci l\'URL Amazon', 'error'); return; }
-  const asin = extractAsin(rawUrl);
-  if (!asin) { toast('URL non valido. Deve contenere /dp/ASIN', 'error'); return; }
-  if (!title) { toast('Inserisci il nome del prodotto', 'error'); return; }
-  if (!price || price <= 0) { toast('Inserisci un prezzo valido', 'error'); return; }
-
-  const products = getProducts();
-  if (products.find(p => p.asin === asin)) { toast('Prodotto già presente', 'error'); return; }
-
-  products.unshift({
-    id: 'amz-' + asin,
-    asin,
-    title,
-    price,
-    origPrice: origPrice || 0,
-    img: img || `https://m.media-amazon.com/images/I/placeholder.jpg`,
-    url: buildAffiliateUrl(asin),
-    cat,
-    addedAt: new Date().toISOString(),
-  });
-
-  saveProducts(products);
-  renderList();
-  toast('✅ Prodotto aggiunto!', 'success');
-
-  // reset form
-  ['inUrl','inTitle','inPrice','inOrig','inImg'].forEach(id => document.getElementById(id).value = '');
-}
-
-function deleteProduct(asin) {
-  if (!confirm('Eliminare questo prodotto?')) return;
-  saveProducts(getProducts().filter(p => p.asin !== asin));
-  renderList();
-  toast('Prodotto eliminato', '');
-}
-
-async function publishToTelegram(asin) {
-  const p = getProducts().find(x => x.asin === asin);
-  if (!p) return;
-  const { token, channel } = getTgSettings();
-
-  const discount = p.origPrice && p.price ? Math.round((1 - p.price / p.origPrice) * 100) : 0;
-  const text = `🔥 <b>OFFERTA AMAZON!</b>
-
-<b>${p.title}</b>
-
-💰 Solo <b>€${p.price.toFixed(2)}</b>${p.origPrice ? `\n❌ <s>€${p.origPrice.toFixed(2)}</s>` : ''}${discount > 0 ? `\n📉 Sconto: <b>-${discount}%</b>` : ''}
-
-🛒 <a href="${p.url}">Vedi su Amazon →</a>
-
-📢 @dropshopofferte`;
-
-  try {
-    const endpoint = p.img && p.img.startsWith('http') ? 'sendPhoto' : 'sendMessage';
-    const body = endpoint === 'sendPhoto'
-      ? { chat_id: channel, photo: p.img, caption: text, parse_mode: 'HTML' }
-      : { chat_id: channel, text, parse_mode: 'HTML', disable_web_page_preview: false };
-
-    const res = await fetch(`https://api.telegram.org/bot${token}/${endpoint}`, {
-      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body)
-    });
-    const data = await res.json();
-
-    if (!data.ok && endpoint === 'sendPhoto') {
-      // fallback a testo se foto fallisce
-      const r2 = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ chat_id: channel, text, parse_mode: 'HTML' })
-      });
-      const d2 = await r2.json();
-      if (d2.ok) { toast('✅ Pubblicato su Telegram!', 'success'); return; }
+async function pub(id){
+  const p=load().find(x=>x.asin===id)||CATALOG.find(x=>x.asin===id);
+  if(!p)return;
+  const {token,chan}=getTg();
+  const disc=p.orig&&p.price?Math.round((1-p.price/p.orig)*100):0;
+  const txt=`🔥 <b>OFFERTA AMAZON!</b>\n\n<b>${p.title}</b>\n\n💰 Solo <b>€${p.price.toFixed(2)}</b>${p.orig?`\n❌ <s>€${p.orig.toFixed(2)}</s>`:''}${disc>0?`\n📉 Sconto: <b>-${disc}%</b>`:''}\n\n🛒 <a href="${p.url}">Vedi su Amazon →</a>\n\n📢 @dropshopofferte`;
+  try{
+    let ok=false;
+    if(p.img){
+      const r=await fetch(`https://api.telegram.org/bot${token}/sendPhoto`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chat_id:chan,photo:p.img,caption:txt,parse_mode:'HTML'})});
+      ok=(await r.json()).ok;
     }
-
-    if (data.ok) toast('✅ Pubblicato su @dropshopofferte!', 'success');
-    else toast('❌ Errore Telegram: ' + (data.description || ''), 'error');
-  } catch (e) { toast('❌ Errore di rete', 'error'); }
+    if(!ok){
+      const r=await fetch(`https://api.telegram.org/bot${token}/sendMessage`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chat_id:chan,text:txt,parse_mode:'HTML'})});
+      ok=(await r.json()).ok;
+    }
+    toast(ok?'✅ Pubblicato su Telegram!':'❌ Errore Telegram',ok?'ok':'err');
+  }catch{toast('❌ Errore di rete','err')}
 }
 
-function saveTgSettings() {
-  const token = document.getElementById('tgToken').value.trim();
-  const channel = document.getElementById('tgChannel').value.trim();
-  if (!token || !channel) { toast('Inserisci token e canale', 'error'); return; }
-  localStorage.setItem(TG_KEY, JSON.stringify({ token, channel }));
-  toast('✅ Impostazioni salvate', 'success');
+function saveTg(){
+  const t=document.getElementById('tToken').value.trim()||DEF_TOKEN;
+  const c=document.getElementById('tChan').value.trim()||DEF_CHAN;
+  localStorage.setItem(TGK,JSON.stringify({token:t,chan:c}));
+  toast('✅ Salvato','ok');
 }
 
-async function testTelegram() {
-  const { token, channel } = getTgSettings();
-  try {
-    const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ chat_id: channel, text: '✅ <b>DropShop Bot funziona!</b>\n\nBot connesso a @dropshopofferte.', parse_mode: 'HTML' })
-    });
-    const data = await res.json();
-    if (data.ok) toast('✅ Test inviato su Telegram!', 'success');
-    else toast('❌ ' + (data.description || 'Errore'), 'error');
-  } catch { toast('❌ Errore di rete', 'error'); }
+async function testTg(){
+  const {token,chan}=getTg();
+  try{
+    const r=await fetch(`https://api.telegram.org/bot${token}/sendMessage`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chat_id:chan,text:'✅ <b>DropShop Bot attivo!</b>\n\nBot connesso a '+chan,parse_mode:'HTML'})});
+    const d=await r.json();
+    toast(d.ok?'✅ Test inviato!':'❌ '+d.description,d.ok?'ok':'err');
+  }catch{toast('❌ Errore rete','err')}
 }
 
-function renderList() {
-  const products = getProducts();
-  const tbody = document.getElementById('productsList');
-  const empty = document.getElementById('emptyAdmin');
-  document.getElementById('countLabel').textContent = products.length;
+function render(){
+  const items=load();
+  document.getElementById('cnt').textContent=items.length;
+  document.getElementById('noItems').style.display=items.length?'none':'block';
+  document.getElementById('tbl').innerHTML=items.map(p=>{
+    const disc=p.orig&&p.price?Math.round((1-p.price/p.orig)*100):0;
+    return`<tr>
+      <td>${p.img?`<img src="${p.img}" onerror="this.style.display='none'">`:'—'}</td>
+      <td><strong>${p.title}</strong><br><small style="color:#aaa">${p.asin}</small></td>
+      <td><strong>€${p.price.toFixed(2)}</strong>${p.orig?`<br><small style="text-decoration:line-through;color:#bbb">€${p.orig.toFixed(2)}</small>`:''}</td>
+      <td>${disc>0?`<span style="background:#ffeaa7;color:#e17055;padding:2px 8px;border-radius:4px;font-size:.78rem;font-weight:700">-${disc}%</span>`:'—'}</td>
+      <td><small>${p.asin}</small></td>
+      <td><div class="actions">
+        <button class="btn btn-tg btn-sm" onclick="pub('${p.asin}')"><i class="fab fa-telegram"></i> Pubblica</button>
+        <a href="${p.url}" target="_blank" class="btn btn-sm" style="background:#ff9900;color:#fff"><i class="fab fa-amazon"></i></a>
+        <button class="btn btn-del" onclick="del('${p.asin}')"><i class="fas fa-trash"></i></button>
+      </div></td>
+    </tr>`;
+  }).join('');
+}
 
-  if (!products.length) {
-    tbody.innerHTML = '';
-    empty.style.display = 'block';
-    return;
+window.addEventListener('DOMContentLoaded',()=>{
+  render();
+  // Mostra i prodotti del catalogo con pulsante pubblica
+  const tbl=document.getElementById('tbl');
+  if(!load().length){
+    // mostra catalogo come sola lettura
   }
-  empty.style.display = 'none';
-
-  const discount = p => p.origPrice && p.price ? Math.round((1 - p.price / p.origPrice) * 100) : 0;
-
-  tbody.innerHTML = products.map(p => `
-    <tr>
-      <td><img src="${p.img}" alt="" onerror="this.src='https://images.unsplash.com/photo-1606220588913-b3aacb4d2f46?w=48&h=48&fit=crop'"></td>
-      <td style="max-width:300px"><strong>${p.title}</strong><br><small style="color:#aaa">${p.asin}</small></td>
-      <td><strong>€${p.price.toFixed(2)}</strong>${p.origPrice ? `<br><small style="text-decoration:line-through;color:#aaa">€${p.origPrice.toFixed(2)}</small>` : ''}</td>
-      <td>${discount(p) > 0 ? `<span style="background:#ffeaa7;color:#e17055;padding:3px 8px;border-radius:4px;font-size:0.8rem;font-weight:700">-${discount(p)}%</span>` : '—'}</td>
-      <td>${p.cat}</td>
-      <td>
-        <div class="td-actions">
-          <button class="btn btn-tg btn-sm" onclick="publishToTelegram('${p.asin}')"><i class="fab fa-telegram"></i> Pubblica</button>
-          <a href="${p.url}" target="_blank" class="btn btn-sm" style="background:#ff9900;color:#fff"><i class="fab fa-amazon"></i> Vedi</a>
-          <button class="btn btn-danger btn-sm" onclick="deleteProduct('${p.asin}')"><i class="fas fa-trash"></i></button>
-        </div>
-      </td>
-    </tr>`).join('');
-}
-
-// Carica impostazioni TG salvate
-window.addEventListener('DOMContentLoaded', () => {
-  const { token, channel } = getTgSettings();
-  document.getElementById('tgToken').value = token === DEFAULT_TOKEN ? '' : token;
-  document.getElementById('tgChannel').value = channel === DEFAULT_CHANNEL ? '' : channel;
-  document.getElementById('tgToken').placeholder = `Bot Token (default: ${DEFAULT_TOKEN.substring(0,15)}...)`;
-  document.getElementById('tgChannel').placeholder = DEFAULT_CHANNEL;
-  renderList();
 });
 </script>
 </body>

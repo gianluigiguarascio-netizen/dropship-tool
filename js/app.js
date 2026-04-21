@@ -1,73 +1,35 @@
-const TAG = 'prezzotop08-21';
-const STORE_KEY = 'dropshop_products_v1';
+let cat = 'tutti';
 
-function getProducts() {
-  // Unisce prodotti manuali (localStorage) con il catalogo automatico
-  const manual = JSON.parse(localStorage.getItem(STORE_KEY) || '[]');
-  const manualAsins = new Set(manual.map(p => p.asin));
-  const catalog = (typeof CATALOG !== 'undefined' ? CATALOG : []).filter(p => !manualAsins.has(p.asin));
-  return [...manual, ...catalog];
+function filter(el) {
+  document.querySelectorAll('#nav a').forEach(a => a.classList.remove('active'));
+  el.classList.add('active');
+  cat = el.dataset.cat;
+  render();
 }
 
-function saveManual(arr) { localStorage.setItem(STORE_KEY, JSON.stringify(arr)); }
-function getManual() { return JSON.parse(localStorage.getItem(STORE_KEY) || '[]'); }
+function render() {
+  const q = (document.getElementById('q').value || '').toLowerCase();
+  let items = CATALOG;
+  if (cat !== 'tutti') items = items.filter(p => p.cat === cat);
+  if (q) items = items.filter(p => p.title.toLowerCase().includes(q));
 
-let currentCat = 'tutti';
-
-function filterCat(cat) {
-  currentCat = cat;
-  document.querySelectorAll('.header-nav a').forEach(a => a.classList.remove('active'));
-  document.querySelectorAll('.header-nav a').forEach(a => {
-    if (a.dataset.cat === cat) a.classList.add('active');
-  });
-  renderProducts();
-}
-
-function renderProducts() {
-  const grid = document.getElementById('productsGrid');
-  const empty = document.getElementById('emptyMsg');
-  if (!grid) return;
-
-  const query = (document.getElementById('searchInput')?.value || '').toLowerCase();
-  let products = getProducts();
-  if (currentCat !== 'tutti') products = products.filter(p => p.cat === currentCat);
-  if (query) products = products.filter(p => p.title.toLowerCase().includes(query));
-
-  if (!products.length) {
-    grid.innerHTML = '';
-    if (empty) empty.style.display = 'block';
-    return;
-  }
-  if (empty) empty.style.display = 'none';
-
-  grid.innerHTML = products.map(p => {
-    const discount = p.origPrice && p.price ? Math.round((1 - p.price / p.origPrice) * 100) : 0;
-    return `
-    <div class="product-card">
+  document.getElementById('grid').innerHTML = items.map(p => {
+    const disc = p.orig ? Math.round((1 - p.price / p.orig) * 100) : 0;
+    return `<div class="card">
       <div class="card-img">
-        ${discount > 0 ? `<span class="badge">-${discount}%</span>` : ''}
-        <img src="${p.img || ''}" alt="${p.title}"
-          onerror="this.src='https://images.unsplash.com/photo-1606220588913-b3aacb4d2f46?w=400&h=400&fit=crop'">
+        ${disc > 0 ? `<span class="badge">-${disc}%</span>` : ''}
+        <img src="${p.img}" alt="${p.title}" onerror="this.src='https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=300&h=300&fit=crop'">
       </div>
       <div class="card-body">
-        <div class="card-title">${p.title}</div>
-        <div class="card-prices">
-          <span class="price-current">€${Number(p.price).toFixed(2)}</span>
-          ${p.origPrice ? `<span class="price-original">€${Number(p.origPrice).toFixed(2)}</span>` : ''}
-        </div>
-        <div class="card-footer">
-          <a href="${p.url}" target="_blank" rel="nofollow sponsored" class="btn-amazon">
-            <i class="fab fa-amazon"></i> Vedi su Amazon
-          </a>
+        <p class="card-title">${p.title}</p>
+        <div class="prices">
+          <span class="price">€${p.price.toFixed(2)}</span>
+          ${p.orig ? `<span class="orig">€${p.orig.toFixed(2)}</span>` : ''}
         </div>
       </div>
+      <a href="${p.url}" target="_blank" rel="sponsored nofollow" class="btn-buy"><i class="fab fa-amazon"></i> Vedi su Amazon</a>
     </div>`;
-  }).join('');
+  }).join('') || '<p style="text-align:center;padding:40px;color:#aaa">Nessun prodotto trovato.</p>';
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  // attiva "Tutti" di default
-  const tuttiLink = document.querySelector('.header-nav a[data-cat="tutti"]');
-  if (tuttiLink) tuttiLink.classList.add('active');
-  renderProducts();
-});
+render();

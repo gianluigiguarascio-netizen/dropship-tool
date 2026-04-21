@@ -1,17 +1,1 @@
-{
-  "functions": {
-    "api/*.js": {
-      "runtime": "nodejs18.x"
-    }
-  },
-  "crons": [
-    {
-      "path": "/api/agent-offerte",
-      "schedule": "0 * * * *"
-    },
-    {
-      "path": "/api/agent-social",
-      "schedule": "0 */3 * * *"
-    }
-  ]
-}
+{}
