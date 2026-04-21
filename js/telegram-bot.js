@@ -36,7 +36,7 @@ const TelegramBot = {
 📉 Sconto: <b>-${deal.discount}%</b>
 ⭐ ${deal.rating}/5
 
-🛒 <a href="https://dropshop-italia.netlify.app">Acquista su DropShop Italia →</a>
+🛒 <a href="https://dropship-tool-ecru.vercel.app">Acquista su DropShop Italia →</a>
 
 📢 @dropshopofferte`;
 
