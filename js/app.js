@@ -4,7 +4,7 @@
  */
 
 const RSS2JSON = 'https://api.rss2json.com/v1/api.json';
-const AFFILIATE_TAG = 'prezzotop-21'; // tag Amazon Associates (da sostituire con il tuo)
+const AFFILIATE_TAG = 'prezzotop08-21'; // tag Amazon Associates (da sostituire con il tuo)
 
 const FEEDS = [
     { url: 'https://www.amazon.it/gp/rss/bestsellers/electronics/', cat: 'elettronica', source: 'Amazon' },
